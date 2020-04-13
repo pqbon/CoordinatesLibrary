@@ -152,7 +152,7 @@ namespace CoordinatesNS {
 	{
 		this->deg = rhs.deg + (rhs.min / static_cast<T>(deg_min));
 
-		return this;
+		return *this;
 	}
 
 	template <typename T>
@@ -160,7 +160,7 @@ namespace CoordinatesNS {
 	{
 		this->deg = rhs.deg + (rhs.min / static_cast<T>(deg_min)) + (rhs.sec / static_cast<T>(deg_sec));
 
-		return this;
+		return *this;
 	}
 
 	template <typename T>

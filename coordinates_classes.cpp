@@ -22,12 +22,20 @@ int main()
 
     CoordinatesNS::CoordinatesDMF test1DMF { DM_tF {10.0f, 10.666f}, DM_tF {10.0f, 10.666f} };
     //CoordinatesNS::CoordinatesDF copytest1DF(test1DMF);
+    CoordinatesNS::CoordinatesDF copytest1DF;
+    convert(copytest1DF, test1DMF);
     CoordinatesNS::CoordinatesDMF copytest1DMF(test1DMF);
     //CoordinatesNS::CoordinatesDMSF copytest1DMSF(test1DMF);
+    CoordinatesNS::CoordinatesDMSF copytest1DMSF;
+    convert(copytest1DMSF, test1DMF);
 
     CoordinatesNS::CoordinatesDMSF test2DMSF { DMS_tF {10.0f, 10.0f, 10.666f}, DMS_tF {10.0f, 10.0f, 10.666f} };
     //CoordinatesNS::CoordinatesDF copytest2DF { test2DMSF };
+    CoordinatesNS::CoordinatesDF copytest2DF;
+    convert(copytest2DF, test2DMSF);
     //CoordinatesNS::CoordinatesDMF copytest2DMF { test2DMSF };
+    CoordinatesNS::CoordinatesDMF copytest2DMF;
+    convert(copytest2DMF, test2DMSF);
     CoordinatesNS::CoordinatesDMSF copytest02MSF(test2DMSF);
 
 }
