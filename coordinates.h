@@ -4,6 +4,8 @@
 #include <initializer_list>
 #include <iostream>
 
+using namespace std::literals::string_literals;
+
 namespace CoordinatesNS {
 
 	constexpr int deg_min { 60 };
@@ -22,9 +24,6 @@ namespace CoordinatesNS {
 	struct Nav_vec_t;
 	template <typename T>
 	struct Cart_vec_t;
-
-	template <typename TN>
-	std::ostream& operator<<(std::ostream& out, const Coordinates<TN>& coord);
 
 	template <class T>
 	class Coordinates
@@ -89,7 +88,11 @@ namespace CoordinatesNS {
 		D_t<T>& operator=(const D_t<T>&) = default;
 		D_t<T>& operator=(D_t<T>&&) = default;
 
-		friend D_t<T> operator+(const D_t<T>& lhs, const D_t<T>& rhs);
+		template <typename TN>
+		friend D_t<TN> operator+ (D_t<TN> lhs, const D_t<TN>& rhs);
+		template <typename TN>
+		friend std::ostream& operator<<(std::ostream& out, const D_t<TN>& coord);
+
 		D_t<T>& operator=(const DM_t<T>& rhs);
 		D_t<T>& operator=(const DMS_t<T> & rhs);
 	};
@@ -110,7 +113,11 @@ namespace CoordinatesNS {
 		DM_t<T>& operator=(const DM_t<T>&) = default;
 		DM_t<T>& operator=(DM_t<T>&&) = default;
 
-		friend DM_t<T> operator+(const DM_t<T>& lhs, const DM_t<T>& rhs);
+		template <typename TN>
+		friend DM_t<TN> operator+ (DM_t<TN> lhs, const DM_t<TN>& rhs);
+		template <typename TN>
+		friend std::ostream& operator<<(std::ostream& out, const DM_t<TN>& coord);
+
 		DM_t<T>& operator=(const D_t<T>&rhs);
 		DM_t<T>& operator=(const DMS_t<T>&rhs);
 	};
@@ -132,19 +139,21 @@ namespace CoordinatesNS {
 		DMS_t<T>& operator=(const DMS_t<T>&) = default;
 		DMS_t<T>& operator=(DMS_t<T>&&) = default;
 
-		friend DMS_t<T> operator+(const DMS_t<T>& lhs, const DMS_t<T>& rhs);
+		template <typename TN>
+		friend DMS_t<TN> operator+ (DMS_t<TN> lhs, const DMS_t<TN>& rhs);
+		template <typename TN>
+		friend std::ostream& operator<<(std::ostream& out, const DMS_t<TN>& coord);
+
 		DMS_t<T>& operator=(const D_t<T>& rhs);
 		DMS_t<T>& operator=(const DM_t<T>& rhs);
 	};
 
 	template <typename T>
-	D_t<T>& operator+(const D_t<T>& lhs, const D_t<T>& rhs)
+	D_t<T> operator+(D_t<T> lhs, const D_t<T>& rhs)
 	{
-		D_t<T> tmp {};
+		lhs.deg += rhs.deg;
 
-		tmp.deg = lhs.deg + rhs.deg;
-
-		return tmp;
+		return lhs;
 	}
 
 	template <typename T>
@@ -164,17 +173,15 @@ namespace CoordinatesNS {
 	}
 
 	template <typename T>
-	DM_t<T>& operator+(const DM_t<T>& lhs, const DM_t<T>& rhs) {
-		DM_t<T> tmpDM {};
-		D_t<T> tmpD {};
-		D_t<T> lhsD { lhs };
-		D_t<T> rhsD { rhs };
+	DM_t<T> operator+(DM_t<T> lhs, const DM_t<T>& rhs) {
+		D_t<T> const lhsD { lhs };
+		D_t<T> const rhsD { rhs };
 
-		tmpD = lhsD + rhsD;
+		D_t<T> tmpD { lhsD + rhsD };
 
-		tmpDM = tmpD;
+		lhs = tmpD;
 
-		return tmpDM;
+		return lhs;
 	}
 
 	template <typename T>
@@ -196,23 +203,21 @@ namespace CoordinatesNS {
 	}
 
 	template <typename T>
-	DMS_t<T>& operator+(const DMS_t<T>& lhs, const DMS_t<T>& rhs) {
-		DMS_t<T> tmpDMS {};
-		D_t<T> tmpD {};
-		D_t<T> lhsD { lhs };
-		D_t<T> rhsD { rhs };
+	DMS_t<T> operator+(DMS_t<T> lhs, const DMS_t<T>& rhs) {
+		D_t<T> const lhsD { lhs };
+		D_t<T> const rhsD { rhs };
 
-		tmpD = lhsD + rhsD;
-		tmpDMS = tmpD;
+		D_t<T> const tmpD { lhsD + rhsD };
+		lhs = tmpD;
 
-		return tmpDMS;
+		return lhs;
 	}
 
 	template <typename T>
 	DMS_t<T>& DMS_t<T>::operator=(const D_t<T>& rhs)
 	{
 		this->deg = std::floor(rhs.deg);
-		T min = std::abs(rhs.deg - this->deg) * static_cast<T>(deg_min);
+		T const min { std::abs(rhs.deg - this->deg) * static_cast<T>(deg_min) };
 		this->min = std::floor(min);
 		this->sec = ((min - std::floor(min)) * static_cast<T>(min_sec));
 
@@ -223,7 +228,7 @@ namespace CoordinatesNS {
 	DMS_t<T>& DMS_t<T>::operator=(const DM_t<T>& rhs)
 	{
 		this->deg = rhs.deg;
-		T min = rhs.min;
+		T const min { rhs.min };
 		this->min = std::floor(rhs.min);
 		this->sec = ((min - rhs.min) * static_cast<T>(min_sec));
 
@@ -233,6 +238,14 @@ namespace CoordinatesNS {
 	template <typename T>
 	struct Nav_vec_t
 	{
+		Nav_vec_t<T>(T distance_, T direction_) : distance { distance_ }, direction { direction_ }
+		{
+		}
+
+		Nav_vec_t<T>(const Cart_vec_t<T>& cvec)
+		{
+			*this = cvec;
+		}
 		Nav_vec_t<T>() = default;
 		~Nav_vec_t<T>() = default;
 		Nav_vec_t<T>(const Nav_vec_t<T>&) = default;
@@ -242,9 +255,15 @@ namespace CoordinatesNS {
 
 		Nav_vec_t<T>& operator=(const Cart_vec_t<T>& rhs);
 
-		friend Nav_vec_t<T> operator+ (const Nav_vec_t<T> &lhs, const Nav_vec_t<T> &rhs);
-		friend Nav_vec_t<T> operator+ (const Nav_vec_t<T> &lhs, const T &rhs);
-		friend Nav_vec_t<T> operator* (const Nav_vec_t<T> &lhs, const T &rhs);
+		template <typename TN>
+		friend Nav_vec_t<TN> operator+ (Nav_vec_t<TN> lhs, const Nav_vec_t<TN> &rhs);
+		template <typename TN>
+		friend Nav_vec_t<TN> operator+ (Nav_vec_t<TN> lhs, const T &rhs);
+		template <typename TN>
+		friend Nav_vec_t<TN> operator* (Nav_vec_t<TN> lhs, const T &rhs);
+
+		template <typename TN>
+		friend std::ostream& operator<<(std::ostream& out, const Nav_vec_t<TN>& nv_);
 
 		T distance {};
 		T direction {};
@@ -253,6 +272,15 @@ namespace CoordinatesNS {
 	template <typename T>
 	struct Cart_vec_t
 	{
+		Cart_vec_t<T>(T x_, T y_) : X { x_ }, Y { y_ }
+		{
+		}
+
+		Cart_vec_t<T>(const Nav_vec_t<T>& nvec)
+		{
+			*this = nvec;
+		}
+
 		Cart_vec_t<T>() = default;
 		~Cart_vec_t<T>() = default;
 		Cart_vec_t<T>(const Cart_vec_t<T>&) = default;
@@ -260,34 +288,52 @@ namespace CoordinatesNS {
 		Cart_vec_t<T>& operator=(const Cart_vec_t<T>&) = default;
 		Cart_vec_t<T>& operator=(Cart_vec_t<T>&&) = default;
 
-		Cart_vec_t<T>& operator=(Nav_vec_t<T>& rhs);
+		Cart_vec_t<T>& operator=(const Nav_vec_t<T>& rhs);
 
-		friend Cart_vec_t<T> operator+ (const Cart_vec_t<T>& lhs, const Cart_vec_t<T>& rhs);
+		template <typename TN>
+		friend Cart_vec_t<TN> operator+ (Cart_vec_t<TN> lhs, const Cart_vec_t<TN>& rhs);
+
+		template <typename TN>
+		friend std::ostream& operator<<(std::ostream& out, const Nav_vec_t<TN>& cv_);
 
 		T X;
 		T Y;
 	};
 
 	template <typename T>
-	Nav_vec_t<T> operator+ (const Nav_vec_t<T> &lhs, const Nav_vec_t<T> &rhs)
+	Nav_vec_t<T> operator+(Nav_vec_t<T> lhs, const Nav_vec_t<T> &rhs)
 	{
-		Nav_vec_t<T> tmp;
-		Cart_vec_t<T> cv1 = lhs;
-		Cart_vec_t<T> cv2 = rhs;
+		Cart_vec_t<T> const cv1 { lhs };
+		Cart_vec_t<T> const cv2 { rhs };
 
-		auto ans = cv1 + cv2;
+		Cart_vec_t<T> const ans { cv1 + cv2 };
 
-		tmp = ans;
+		lhs = ans;
 
-		return tmp;
+		return lhs;
 	}
 
 	template <typename T>
-	Nav_vec_t<T>& Nav_vec_t<T>::operator=(const Cart_vec_t<T>& rhs)
+	T radians(T deg) {
+		static const T pi { std::acos(static_cast<T>(-1)) };
+
+		T rad { (deg * pi) / static_cast<T>(180) };
+		return rad;
+	}
+
+	template <typename T>
+	T degrees(T rad) {
+		static const T pi { std::acos(static_cast<T>(-1)) };
+
+		T deg { (rad * static_cast<T>(180)) / pi };
+		return deg;
+	}
+
+	template <typename T>
+	Nav_vec_t<T>& Nav_vec_t<T>::operator= (const Cart_vec_t<T>& rhs)
 	{
-		Nav_vec_t<T> tmp;
-		T X = std::abs(rhs.X);
-		T Y = std::abs(rhs.Y);
+		T const X { std::abs(rhs.X) };
+		T const Y { std::abs(rhs.Y) };
 		constexpr T M0   { static_cast<T>(0)   };
 		constexpr T M90  { static_cast<T>(90)  };
 		constexpr T M180 { static_cast<T>(180) };
@@ -297,75 +343,69 @@ namespace CoordinatesNS {
 		//r = sqrt(x2 + y2)
 		//theta = atan(y / x)
 
-		tmp.distance = std::sqrt(std::pow(X, 2) + std::pow(Y, 2));
-		T theta = std::atan(Y/X);
+		this->distance = std::hypot(rhs.X, rhs.Y);
+		T theta { std::atan(Y / X) };
 
 		if ((rhs.X > 0) && (rhs.Y > 0))
 		{
-			tmp.direction = M90 - theta;
+			this->direction = M90 - degrees(theta);
 		}
 		else if ((rhs.X > 0) && (rhs.Y < 0))
 		{
-			tmp.direction = M90 + theta;
+			this->direction = M90 + degrees(theta);
 		}
 		else if ((rhs.X < 0) && (rhs.Y < 0))
 		{
-			tmp.direction = M180 + theta;
+			this->direction = M180 + degrees(theta);
 		}
 		else if ((rhs.X < 0) && (rhs.Y > 0))
 		{
-			tmp.direction = M270 + theta;
+			this->direction = M270 + degrees(theta);
 		}
 		else if ((rhs.X > 0) && (rhs.Y == 0)) //West
 		{
-			tmp.direction = M90;
+			this->direction = M90;
 		}
 		else if ((rhs.X < 0) && (rhs.Y == 0)) //East
 		{
-			tmp.direction = M270;
+			this->direction = M270;
 		}
 		else if ((rhs.X == 0) && (rhs.Y > 0)) //North
 		{
-			tmp.direction = M0;
+			this->direction = M0;
 		}
 		else if ((rhs.X == 0) && (rhs.Y < 0)) //South
 		{
-			tmp.direction = M180;
+			this->direction = M180;
 		}
 		else
 		{
-			tmp.direction = M360;
+			this->direction = M360;
 		}
 
-		return *tmp;
+		return *this;
 	}
 		
 	template <typename T>
-	Nav_vec_t<T> operator+ (const Nav_vec_t<T> &lhs, const T &rhs)
+	Nav_vec_t<T> operator+ (Nav_vec_t<T> lhs, const T &rhs)
 	{
-		Nav_vec_t<T> tmp {};
+		lhs.distance += rhs;
 
-		tmp.distance = lhs.distance + rhs;
-		tmp.direction = lhs.direction;
-
-		return tmp;
+		return lhs;
 	}
 	
 	template <typename T>
-	Nav_vec_t<T> operator* (const Nav_vec_t<T> &lhs, const T &rhs)
+	Nav_vec_t<T> operator* (Nav_vec_t<T> lhs, const T &rhs)
 	{
-		Nav_vec_t<T> tmp {};
+		lhs.distance *= rhs;
 
-		tmp.distance = lhs.distance * rhs;
-		tmp.direction = lhs.direction;
-
-		return tmp;
+		return lhs;
 	}
 
 	template <typename T>
-	Cart_vec_t<T>& Cart_vec_t<T>::operator=(Nav_vec_t<T>& rhs)
+	Cart_vec_t<T>& Cart_vec_t<T>::operator=(const Nav_vec_t<T>& rhs)
 	{
-		Cart_vec_t<T> tmp;
+
 		T theta;
 		T magX;
 		T magY;
@@ -381,44 +421,42 @@ namespace CoordinatesNS {
 
 		if (rhs.direction < M90)
 		{
-			theta = M90 - rhs.direction;
+			theta = radians(M90 - rhs.direction);
 			magX = rhs.distance;
 			magY = rhs.distance;
 		}
 		else if (rhs.direction < M180)
 		{
-			theta = rhs.direction - M90;
+			theta = radians(rhs.direction - M90);
 			magX = rhs.distance;
 			magY = -rhs.distance;
 		}
 		else if (rhs.direction < M270)
 		{
-			theta = M90 - (rhs.direction - M180);
+			theta = radians(M90 - (rhs.direction - M180));
 			magX = -rhs.distance;
 			magY = -rhs.distance;
 		}
 		else //theta < M360
 		{
-			theta = rhs.direction - M270;
+			theta = radians(rhs.direction - M270);
 			magX = -rhs.distance;
 			magY = rhs.distance;
 		}
 
-		tmp.X = magX * std::cos(theta);
-		tmp.Y = magY * std::sin(theta);
+		this->X = magX * std::cos(theta);
+		this->Y = magY * std::sin(theta);
 
-		return *tmp;
+		return *this;
 	}
 
 	template <typename T>
-	Cart_vec_t<T> operator+ (const Cart_vec_t<T>& lhs, const Cart_vec_t<T>& rhs)
+	Cart_vec_t<T> operator+ (Cart_vec_t<T> lhs, const Cart_vec_t<T>& rhs)
 	{
-		Cart_vec_t<T> tmp;
+		lhs.X += rhs.X;
+		lhs.Y += rhs.Y;
 
-		tmp.X = lhs.X + rhs.X;
-		tmp.Y = lhs.Y + rhs.Y;
-
-		return *tmp;
+		return lhs;
 	}
 
 	using D_tF = D_t<float_t>;
@@ -477,8 +515,42 @@ namespace CoordinatesNS {
 
 	template <typename TN>
 	std::ostream& operator<<(std::ostream& out, const Coordinates<TN> &coord) {
-		return out << coord.lat << " " << coord.lon;
+		bool const north { coord.latM.deg >= 0 };
+		bool const east { coord.lonM.deg >= 0 };
+		static const std::string north_desg { "N"s };
+		static const std::string south_desg { "S"s };
+		static const std::string east_desg { "E"s };
+		static const std::string west_desg { "W"s };
+
+		const std::string ns_string { (north) ? north_desg : south_desg };
+		const std::string ew_string { (east) ? east_desg : west_desg };
+
+		return out << coord.latM << ns_string  << " "s << coord.lonM << ew_string;
 	}
 
+	template <typename TN>
+	std::ostream& operator<<(std::ostream& out, const Nav_vec_t<TN>& nv_) {
+		return out << nv_.distance << " "s << nv_.direction << "d"s;
+	}
+
+	template <typename TN>
+	std::ostream& operator<<(std::ostream& out, const Cart_vec_t<TN>& cv_) {
+		return out << cv_.X << "X "s << cv_.Y << "Y"s;
+	}
+
+	template <typename TN>
+	std::ostream& operator<<(std::ostream& out, const D_t<TN>& coord) {
+		return out << coord.deg << "d"s;
+	}
+
+	template <typename TN>
+	std::ostream& operator<<(std::ostream& out, const DM_t<TN>& coord) {
+		return out << coord.deg << "d "s << coord.min << "m"s;
+	}
+
+	template <typename TN>
+	std::ostream& operator<<(std::ostream& out, const DMS_t<TN>& coord) {
+		return out << coord.deg << "d "s << coord.min << "m "s << coord.sec << "s"s;
+	}
 
 } //CoordinatesNS

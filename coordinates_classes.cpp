@@ -38,15 +38,19 @@ int main()
     convert(copytest2DMF, test2DMSF);
     CoordinatesNS::CoordinatesDMSF copytest02MSF(test2DMSF);
 
+    CoordinatesNS::Cart_vec_tF testCartVec0 { 10, 10 };
+    CoordinatesNS::Cart_vec_tF testCartVec1 { 20, 20 };
+    CoordinatesNS::Cart_vec_tF testCartVecA { testCartVec0 + testCartVec1 };
+
+
+    CoordinatesNS::Nav_vec_tF testNavVec0 { 20, 45 };
+    CoordinatesNS::Nav_vec_tF testNavVec1 { 30, 45 };
+
+    CoordinatesNS::Nav_vec_tF testNavVecA { testNavVec0 + testNavVec1 }; //Bugbug
+
+    std::cout << "test0DF " << test0DF << std::endl;
+    std::cout << "test1DMF " << test1DMF << std::endl;
+    std::cout << "test2DMSF " << test2DMSF << std::endl;
+    std::cout << "testCartVec0 " << testCartVec0 << " + testCartVec1 " << testCartVec1 << " = testCartVecA " << testCartVecA << std::endl;
+    std::cout << "testNavVec0 " << testNavVec0 << " + testNavVec1 " << testNavVec1 << " = testNavVecA " << testNavVecA << std::endl;
 }
-
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
