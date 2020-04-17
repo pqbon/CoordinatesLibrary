@@ -26,5 +26,14 @@
     <ClInclude Include="coordinates.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="nav_vectors.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="nav_types.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="nav_constants.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

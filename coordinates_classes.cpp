@@ -3,6 +3,8 @@
 
 #include <iostream>
 #include "coordinates.h"
+#include "nav_vectors.h"
+#include "nav_types.h"
 
 
 using namespace CoordinatesNS;

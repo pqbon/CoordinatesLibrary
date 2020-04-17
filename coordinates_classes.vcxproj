@@ -156,6 +156,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="coordinates.h" />
+    <ClInclude Include="nav_constants.h" />
+    <ClInclude Include="nav_types.h" />
+    <ClInclude Include="nav_vectors.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
