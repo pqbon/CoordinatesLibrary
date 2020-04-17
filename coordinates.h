@@ -522,8 +522,8 @@ namespace CoordinatesNS {
 
 	template <typename TN>
 	std::ostream& operator<<(std::ostream& out, const Coordinates<TN> &coord) {
-		bool const north { coord.latM.deg >= 0 };
-		bool const east { coord.lonM.deg >= 0 };
+		bool const north { !std::signbit(coord.latM.deg) };
+		bool const east { !std::signbit(coord.lonM.deg) };
 		static const std::string north_desg { "N"s };
 		static const std::string south_desg { "S"s };
 		static const std::string east_desg { "E"s };
