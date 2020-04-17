@@ -547,17 +547,17 @@ namespace CoordinatesNS {
 
 	template <typename TN>
 	std::ostream& operator<<(std::ostream& out, const D_t<TN>& coord) {
-		return out << coord.deg << "d"s;
+		return out << std::abs(coord.deg) << "d"s;
 	}
 
 	template <typename TN>
 	std::ostream& operator<<(std::ostream& out, const DM_t<TN>& coord) {
-		return out << coord.deg << "d "s << coord.min << "m"s;
+		return out << std::abs(coord.deg) << "d "s << coord.min << "m"s;
 	}
 
 	template <typename TN>
 	std::ostream& operator<<(std::ostream& out, const DMS_t<TN>& coord) {
-		return out << coord.deg << "d "s << coord.min << "m "s << coord.sec << "s"s;
+		return out << std::abs(coord.deg) << "d "s << coord.min << "m "s << coord.sec << "s"s;
 	}
 
 } //CoordinatesNS
