@@ -2,7 +2,7 @@
 //
 
 #include <iostream>
-#include "coordinates.h"
+#include "nav_coordinates.h"
 #include "nav_vectors.h"
 #include "nav_types.h"
 

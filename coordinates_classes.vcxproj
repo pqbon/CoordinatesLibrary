@@ -155,7 +155,8 @@
     <ClCompile Include="coordinates_classes.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="coordinates.h" />
+    <ClInclude Include="nav_calculations.h" />
+    <ClInclude Include="nav_coordinates.h" />
     <ClInclude Include="nav_constants.h" />
     <ClInclude Include="nav_types.h" />
     <ClInclude Include="nav_vectors.h" />

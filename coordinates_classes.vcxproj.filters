@@ -23,9 +23,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="coordinates.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="nav_vectors.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -33,6 +30,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="nav_constants.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="nav_coordinates.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="nav_calculations.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

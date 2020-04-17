@@ -9,6 +9,13 @@
 using namespace std::literals::string_literals;
 
 namespace CoordinatesNS {
+
+	template <typename T>
+	struct Nav_vec_t;
+
+	template <typename T>
+	struct Cart_vec_t;
+
 	template <typename T>
 	struct Nav_vec_t
 	{
@@ -85,26 +92,6 @@ namespace CoordinatesNS {
 		lhs = ans;
 
 		return lhs;
-	}
-
-	template <typename T>
-	T radians(T deg) {
-		//static const T pi_to_rads { (std::acos(static_cast<T>(-1))) / static_cast<T>(180) };
-		constexpr T pi_to_rads { my_pi<T> / static_cast<T>(180) };
-
-		T rad { deg * pi_to_rads };
-
-		return rad;
-	}
-
-	template <typename T>
-	T degrees(T rad) {
-		//static const T pi_to_degs { static_cast<T>(180) / std::acos(static_cast<T>(-1)) };
-		constexpr T pi_to_degs { static_cast<T>(180) / my_pi<T> };
-
-		T deg { rad * pi_to_degs };
-
-		return deg;
 	}
 
 	template <typename T>

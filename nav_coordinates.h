@@ -18,14 +18,16 @@ namespace CoordinatesNS {
 	struct DM_t;
 	template <typename T>
 	struct DMS_t;
-	template <typename T>
-	struct Nav_vec_t;
-	template <typename T>
-	struct Cart_vec_t;
 
 	template <class T>
 	class Coordinates
 	{
+	// Private must be first to make phi and lambda work...
+	private:
+		T latM {};
+
+		T lonM {};
+
 	public:
 		Coordinates<T>(T lat_, T lon_) : latM { lat_ }, lonM { lon_ } {}
 		Coordinates<T>() = default;
@@ -48,16 +50,21 @@ namespace CoordinatesNS {
 		T lon() const { return lonM; }
 		void lon(const T lon_) { lonM = lon_; }
 
+		D_t<decltype(latM.deg)> phi() const {
+			D_t<decltype(latM.deg)> dlatM {latM};
+			return dlatM; 
+		}
+
+		D_t<decltype(lonM.deg)> lambda() const {
+			D_t<decltype(lonM.deg)> dlonM {lonM};
+			return dlonM; 
+		}
+
 		template <typename T0, typename T1>
 		friend void convert(T0 &t0, const T1 &t1);
 
 		template <typename TN>
 		friend std::ostream& operator<<(std::ostream& out, const Coordinates<TN>& coord);
-
-	private:
-		T latM {};
-
-		T lonM {};
 	};
 
 	//// D = D + M/60 + S/3600
@@ -157,7 +164,7 @@ namespace CoordinatesNS {
 	template <typename T>
 	D_t<T>& D_t<T>::operator=(const DM_t<T>& rhs)
 	{
-		this->deg = rhs.deg + (rhs.min / static_cast<T>(deg_min));
+		this->deg = rhs.deg + (rhs.min / NavigationConstantsNS::deg_min<T>);
 
 		return *this;
 	}
@@ -165,7 +172,7 @@ namespace CoordinatesNS {
 	template <typename T>
 	D_t<T>& D_t<T>::operator=(const DMS_t<T>& rhs)
 	{
-		this->deg = rhs.deg + (rhs.min / static_cast<T>(deg_min)) + (rhs.sec / static_cast<T>(deg_sec));
+		this->deg = rhs.deg + (rhs.min / NavigationConstantsNS::deg_min<T>) + (rhs.sec / NavigationConstantsNS::deg_sec<T>);
 
 		return *this;
 	}
@@ -186,7 +193,7 @@ namespace CoordinatesNS {
 	DM_t<T>& DM_t<T>::operator=(const D_t<T>& rhs)
 	{
 		this->deg = std::floor(rhs.deg) ;
-		this->min = std::abs(rhs.deg - this->deg) * static_cast<T>(deg_min);
+		this->min = std::abs(rhs.deg - this->deg) * NavigationConstantsNS::deg_min<T>;
 
 		return *this;
 	}
@@ -195,7 +202,7 @@ namespace CoordinatesNS {
 	DM_t<T>& DM_t<T>::operator=(const DMS_t<T>& rhs)
 	{
 		this->deg = rhs.deg;
-		this->min = rhs.min + (rhs.sec / static_cast<T>(min_sec));
+		this->min = rhs.min + (rhs.sec / NavigationConstantsNS::min_sec<T>);
 
 		return *this;
 	}
@@ -215,9 +222,9 @@ namespace CoordinatesNS {
 	DMS_t<T>& DMS_t<T>::operator=(const D_t<T>& rhs)
 	{
 		this->deg = std::floor(rhs.deg);
-		T const min { std::abs(rhs.deg - this->deg) * static_cast<T>(deg_min) };
+		T const min { std::abs(rhs.deg - this->deg) * NavigationConstantsNS::deg_min<T> };
 		this->min = std::floor(min);
-		this->sec = ((min - std::floor(min)) * static_cast<T>(min_sec));
+		this->sec = ((min - std::floor(min)) * NavigationConstantsNS::min_sec<T>);
 
 		return *this;
 	}
@@ -228,7 +235,7 @@ namespace CoordinatesNS {
 		this->deg = rhs.deg;
 		T const min { rhs.min };
 		this->min = std::floor(rhs.min);
-		this->sec = ((min - rhs.min) * static_cast<T>(min_sec));
+		this->sec = ((min - rhs.min) * NavigationConstantsNS::min_sec<T>);
 
 		return *this;
 	}
@@ -258,16 +265,16 @@ namespace CoordinatesNS {
 
 	template <typename TN>
 	std::ostream& operator<<(std::ostream& out, const D_t<TN>& coord) {
-		return out << std::abs(coord.deg) << "d"s;
+		return out << std::abs(coord.deg);
 	}
 
 	template <typename TN>
 	std::ostream& operator<<(std::ostream& out, const DM_t<TN>& coord) {
-		return out << std::abs(coord.deg) << "d "s << coord.min << "m"s;
+		return out << std::abs(coord.deg) << ":"s << coord.min;
 	}
 
 	template <typename TN>
 	std::ostream& operator<<(std::ostream& out, const DMS_t<TN>& coord) {
-		return out << std::abs(coord.deg) << "d "s << coord.min << "m "s << coord.sec << "s"s;
+		return out << std::abs(coord.deg) << ":"s << coord.min << ":"s << coord.sec;
 	}
 } //CoordinatesNS
