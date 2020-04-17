@@ -314,18 +314,25 @@ namespace CoordinatesNS {
 	}
 
 	template <typename T>
-	T radians(T deg) {
-		static const T pi { std::acos(static_cast<T>(-1)) };
+	constexpr T my_pi { static_cast<T>(3.141592653589793238462643383279502884197169399375105820974944592307816406286) };
 
-		T rad { (deg * pi) / static_cast<T>(180) };
+	template <typename T>
+	T radians(T deg) {
+		//static const T pi_to_rads { (std::acos(static_cast<T>(-1))) / static_cast<T>(180) };
+		constexpr T pi_to_rads { my_pi<T> / static_cast<T>(180)};
+
+		T rad { deg * pi_to_rads };
+
 		return rad;
 	}
 
 	template <typename T>
 	T degrees(T rad) {
-		static const T pi { std::acos(static_cast<T>(-1)) };
+		//static const T pi_to_degs { static_cast<T>(180) / std::acos(static_cast<T>(-1)) };
+		constexpr T pi_to_degs { static_cast<T>(180) / my_pi<T>};
 
-		T deg { (rad * static_cast<T>(180)) / pi };
+		T deg { rad * pi_to_degs };
+
 		return deg;
 	}
 
