@@ -51,12 +51,14 @@ namespace CoordinatesNS {
 		void lon(const T lon_) { lonM = lon_; }
 
 		D_t<decltype(latM.deg)> phi() const {
-			D_t<decltype(latM.deg)> dlatM {latM};
+			D_t<decltype(latM.deg)> dlatM {};
+			dlatM = latM;
 			return dlatM; 
 		}
 
 		D_t<decltype(lonM.deg)> lambda() const {
-			D_t<decltype(lonM.deg)> dlonM {lonM};
+			D_t<decltype(lonM.deg)> dlonM {};
+			dlonM = lonM;
 			return dlonM; 
 		}
 

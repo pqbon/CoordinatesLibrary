@@ -44,6 +44,14 @@ namespace CoordinatesNS {
 		friend Nav_vec_t<TN> operator* (Nav_vec_t<TN> lhs, const T& rhs);
 
 		template <typename TN>
+		friend Nav_vec_t<TN> operator- (Nav_vec_t<TN> lhs, const Nav_vec_t<TN>& rhs);
+		template <typename TN>
+		friend Nav_vec_t<TN> operator- (Nav_vec_t<TN> lhs, const T& rhs);
+		template <typename TN>
+		friend Nav_vec_t<TN> operator/ (Nav_vec_t<TN> lhs, const T& rhs);
+
+
+		template <typename TN>
 		friend std::ostream& operator<<(std::ostream& out, const Nav_vec_t<TN>& nv_);
 
 		T distance {};
@@ -75,6 +83,9 @@ namespace CoordinatesNS {
 		friend Cart_vec_t<TN> operator+ (Cart_vec_t<TN> lhs, const Cart_vec_t<TN>& rhs);
 
 		template <typename TN>
+		friend Cart_vec_t<TN> operator- (Cart_vec_t<TN> lhs, const Cart_vec_t<TN>& rhs);
+
+		template <typename TN>
 		friend std::ostream& operator<<(std::ostream& out, const Nav_vec_t<TN>& cv_);
 
 		T X;
@@ -95,6 +106,20 @@ namespace CoordinatesNS {
 	}
 
 	template <typename T>
+	Nav_vec_t<T> operator-(Nav_vec_t<T> lhs, const Nav_vec_t<T>& rhs)
+	{
+		Cart_vec_t<T> const cv1 { lhs };
+		Cart_vec_t<T> const cv2 { rhs };
+
+		Cart_vec_t<T> const ans { cv1 - cv2 };
+
+		lhs = ans;
+
+		return lhs;
+	}
+
+
+	template <typename T>
 	Nav_vec_t<T>& Nav_vec_t<T>::operator= (const Cart_vec_t<T>& rhs)
 	{
 		T const X { std::abs(rhs.X) };
@@ -109,23 +134,23 @@ namespace CoordinatesNS {
 		//theta = atan(y / x)
 
 		this->distance = std::hypot(rhs.X, rhs.Y);
-		T theta { std::atan(Y / X) };
+		T const theta { std::atan(Y / X) };
 
 		if ((rhs.X > 0) && (rhs.Y > 0))
 		{
-			this->direction = M90 - degrees(theta);
+			this->direction = M90 - radians2degrees(theta);
 		}
 		else if ((rhs.X > 0) && (rhs.Y < 0))
 		{
-			this->direction = M90 + degrees(theta);
+			this->direction = M90 + radians2degrees(theta);
 		}
 		else if ((rhs.X < 0) && (rhs.Y < 0))
 		{
-			this->direction = M180 + degrees(theta);
+			this->direction = M180 + radians2degrees(theta);
 		}
 		else if ((rhs.X < 0) && (rhs.Y > 0))
 		{
-			this->direction = M270 + degrees(theta);
+			this->direction = M270 + radians2degrees(theta);
 		}
 		else if ((rhs.X > 0) && (rhs.Y == 0)) //West
 		{
@@ -168,6 +193,22 @@ namespace CoordinatesNS {
 	}
 
 	template <typename T>
+	Nav_vec_t<T> operator- (Nav_vec_t<T> lhs, const T& rhs)
+	{
+		lhs.distance -= rhs;
+
+		return lhs;
+	}
+
+	template <typename T>
+	Nav_vec_t<T> operator/ (Nav_vec_t<T> lhs, const T& rhs)
+	{
+		lhs.distance /= rhs;
+
+		return lhs;
+	}
+
+	template <typename T>
 	Cart_vec_t<T>& Cart_vec_t<T>::operator=(const Nav_vec_t<T>& rhs)
 	{
 
@@ -186,25 +227,25 @@ namespace CoordinatesNS {
 
 		if (rhs.direction < M90)
 		{
-			theta = radians(M90 - rhs.direction);
+			theta = degress2radians(M90 - rhs.direction);
 			magX = rhs.distance;
 			magY = rhs.distance;
 		}
 		else if (rhs.direction < M180)
 		{
-			theta = radians(rhs.direction - M90);
+			theta = degress2radians(rhs.direction - M90);
 			magX = rhs.distance;
 			magY = -rhs.distance;
 		}
 		else if (rhs.direction < M270)
 		{
-			theta = radians(M90 - (rhs.direction - M180));
+			theta = degress2radians(M90 - (rhs.direction - M180));
 			magX = -rhs.distance;
 			magY = -rhs.distance;
 		}
 		else //theta < M360
 		{
-			theta = radians(rhs.direction - M270);
+			theta = degress2radians(rhs.direction - M270);
 			magX = -rhs.distance;
 			magY = rhs.distance;
 		}
@@ -220,6 +261,15 @@ namespace CoordinatesNS {
 	{
 		lhs.X += rhs.X;
 		lhs.Y += rhs.Y;
+
+		return lhs;
+	}
+
+	template <typename T>
+	Cart_vec_t<T> operator- (Cart_vec_t<T> lhs, const Cart_vec_t<T>& rhs)
+	{
+		lhs.X -= rhs.X;
+		lhs.Y -= rhs.Y;
 
 		return lhs;
 	}

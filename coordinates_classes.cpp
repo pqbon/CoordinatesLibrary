@@ -5,6 +5,7 @@
 #include "nav_coordinates.h"
 #include "nav_vectors.h"
 #include "nav_types.h"
+#include "nav_calculations.h"
 
 
 using namespace CoordinatesNS;
@@ -51,9 +52,9 @@ int main()
 
     CoordinatesNS::Nav_vec_tF testNavVecA { testNavVec0 + testNavVec1 };
 
-    std::cout << "test0DF "s << test0DF << " "s << copytest0DF << " "s << copytest0DMF << " "s << copytest0DMSF << " "s << std::endl;
-    std::cout << "test1DMF "s << test1DMF << " "s << copytest1DF << " "s << copytest1DMF << " "s << copytest1DMSF << " "s << std::endl;
-    std::cout << "test2DMSF "s << test2DMSF << " "s << copytest2DF << " "s << copytest2DMF << " "s << copytest2DMSF << std::endl;
+    std::cout << "test0DF "s << test0DF << " "s << copytest0DF << " "s << copytest0DMF << " "s << copytest0DMSF << " Phi "s << test0DF.phi() << " Lambda "s << test0DF.lambda() << std::endl;
+    std::cout << "test1DMF "s << test1DMF << " "s << copytest1DF << " "s << copytest1DMF << " "s << copytest1DMSF << " Phi "s << test1DMF.phi() << " Lambda "s << test1DMF.lambda() << std::endl;
+    std::cout << "test2DMSF "s << test2DMSF << " "s << copytest2DF << " "s << copytest2DMF << " "s << copytest2DMSF << " Phi "s << test2DMSF.phi() << " Lambda "s << test2DMSF.lambda() << std::endl;
     std::cout << "testCartVec0 "s << testCartVec0 << " + testCartVec1 "s << testCartVec1 << " = testCartVecA "s << testCartVecA << std::endl;
     std::cout << "testNavVec0 "s << testNavVec0 << " + testNavVec1 "s << testNavVec1 << " = testNavVecA "s << testNavVecA << std::endl;
 }
