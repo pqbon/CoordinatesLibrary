@@ -74,86 +74,93 @@ namespace CoordinatesNS {
 	//
 
 	template <typename T>
-	T radians2nm(T rad) {
+	T radians2nm(T const rad) {
 		T const nm { rad * NavigationConstantsNS::rad_to_nm<T>};
 
 		return nm;
 	}
 
 	template <typename T>
-	T nm2radians(T nm) {
+	T nm2radians(T const nm) {
 		T const rad { nm * NavigationConstantsNS::nm_to_rad<T>};
 
 		return rad;
 	}
 
 	template <typename T>
-	T radians2miles(T rad) {
+	T radians2miles(T const rad) {
 		T const miles { rad * NavigationConstantsNS::rad_to_mile<T>};
 
 		return miles;
 	}
 
 	template <typename T>
-	T miles2radians(T miles) {
+	T miles2radians(T const miles) {
 		T const rad { miles * NavigationConstantsNS::mile_to_rad<T> };
 
 		return rad;
 	}
 
 	template <typename T>
-	T m2km(T m) {
+	T m2km(T const m) {
 		T const km { m * NavigationConstantsNS::m_to_km<T>};
 
 		return km;
 	}
 
 	template <typename T>
-	T km2m(T km) {
+	T km2m(T const km) {
 		T const m { km * NavigationConstantsNS::km_to_m<T>};
 
 		return m;
 	}
 
 	template <typename T>
-	T km2nm(T km) {
+	T km2nm(T const km) {
 		T const nm { km * NavigationConstantsNS::km_to_nm<T>};
 
 		return nm;
 	}
 
 	template <typename T>
-	T nm2km(T nm) {
+	T nm2km(T const nm) {
 		T const km { nm * NavigationConstantsNS::nm_to_km<T>};
 
 		return km;
 	}
 
 	template <typename T>
-	T m2nm(T m) {
+	T m2nm(T const m) {
 		T const nm { m * NavigationConstantsNS::m_to_nm<T>};
 
 		return nm;
 	}
 
 	template <typename T>
-	T nm2m(T nm) {
+	T nm2m(T const nm) {
 		T const m { nm * NavigationConstantsNS::nm_to_m<T> };
 
 		return m;
 	}
 
 	template <typename T>
-	T degress2radians(T deg) {
+	T degress2radians(T const deg) {
 		T const rad { deg * NavigationConstantsNS::to_rads<T> };
 
 		return rad;
 	}
 
 	template <typename T>
-	T radians2degrees(T rad) {
+	T radians2degrees(T const rad) {
 		T const deg { rad * NavigationConstantsNS::to_degs<T> };
 
 		return deg;
+	}
+
+	template <typename T>
+	T mod(T x, T y) {
+		//mod(y,x) = y - x*floor(y/x)
+		T const ans { y - x * std::floor(y / x) };
+		return ans;
 	}
 }

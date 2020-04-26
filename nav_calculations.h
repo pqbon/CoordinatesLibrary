@@ -1,5 +1,8 @@
 #pragma once
 
+#include <cmath>
+#include <cstdlib>
+
 #include "nav_constants.h"
 #include "nav_types.h"
 #include "nav_coordinates.h"
@@ -96,8 +99,24 @@ namespace CoordinatesNS {
 		auto const term1 { cos_lat0 * cos_lat1 * cos_londiff };
 		auto const dist_rad { std::asin(term0 + term1) };
 		auto const dist_nm { radians2nm(dist_rad) };
-		//   tc1=mod(atan2(sin(lon1-lon2)*cos(lat2),
-		//      cos(lat1)* sin(lat2) - sin(lat1) * cos(lat2) * cos(lon1 - lon2)), 2 * pi)
+
+//We obtain the initial course, tc1, (at point 1) from point 1 to point 2 by the following.The formula fails if the initial point is a pole.We can special case this with:
+//	IF(cos(lat1) < EPS)   // EPS a small number ~ machine precision
+//		IF(lat1 > 0)
+//			tc1 = pi        //  starting from N pole
+//		ELSE
+//			tc1 = 2 * pi         //  starting from S pole
+//		ENDIF
+//	ENDIF
+//		For starting points other than the poles :
+//	IF sin(lon2 - lon1) < 0
+//			tc1 = acos((sin(lat2) - sin(lat1) * cos(d)) / (sin(d) * cos(lat1)))
+//	ELSE
+//		tc1 = 2 * pi - acos((sin(lat2) - sin(lat1) * cos(d)) / (sin(d) * cos(lat1)))
+//	ENDIF
+		auto const sin_dist { std::sin(dist_rad) };
+		auto const cos_dist { std::cos(dist_rad) };
+
 		decltype(p0.phi()) tc1 {};
 		constexpr decltype(p0.phi()) eps { std::numeric_limits::min() };
 		if (cos_lat0 < eps) {
@@ -107,8 +126,12 @@ namespace CoordinatesNS {
 			else {
 				tc1 = 2 * NavigationConstantsNS::my_pi<decltype(p0.phi())>;
 			}
-		} else {
-			tc1 = { XXX(std::atan2(sin_londiff * cos_lat1, cos_lat0 * sin_lat1 - sin_lat0 * cos_londiff), 2 * NavigationConstantsNS::my_pi<decltype(p0.phi())>) };
+		}
+		if (sin_londiff < 0) {
+			tc1 = std::acos((sin_lat0 - sin_lat1 * cos_dist) / (sin_dist * cos_lat0));
+		}
+		else {
+			tc1 = { 2 * NavigationConstantsNS::my_pi<decltype(p0.phi())>  -std::acos((sin_lat0 - sin_lat1 * cos_dist) / (sin_dist * cos_lat0)) };
 		}
 
 		auto const angle_deg { radians2degrees(tc1) };
@@ -125,6 +148,21 @@ namespace CoordinatesNS {
 
 		return ret;
 	}
-
-
 };
+
+//
+////   tc1=mod(atan2(sin(lon1-lon2)*cos(lat2),
+////      cos(lat1)* sin(lat2) - sin(lat1) * cos(lat2) * cos(lon1 - lon2)), 2 * pi)
+//decltype(p0.phi()) tc1 {};
+//constexpr decltype(p0.phi()) eps { std::numeric_limits::min() };
+//if (cos_lat0 < eps) {
+//	if (rlat0 > 0) {
+//		tc1 = NavigationConstantsNS::my_pi<decltype(p0.phi())>;
+//	}
+//	else {
+//		tc1 = 2 * NavigationConstantsNS::my_pi<decltype(p0.phi())>;
+//	}
+//}
+//else {
+//	tc1 = { XXX(std::atan2(sin_londiff * cos_lat1, cos_lat0 * sin_lat1 - sin_lat0 * cos_londiff), 2 * NavigationConstantsNS::my_pi<decltype(p0.phi())>) };
+//}
