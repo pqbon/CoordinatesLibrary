@@ -50,16 +50,16 @@ namespace CoordinatesNS {
 		T lon() const { return lonM; }
 		void lon(const T lon_) { lonM = lon_; }
 
-		D_t<decltype(latM.deg)> phi() const {
+		decltype(latM.deg) phi() const {
 			D_t<decltype(latM.deg)> dlatM {};
 			dlatM = latM;
-			return dlatM; 
+			return dlatM.deg; 
 		}
 
-		D_t<decltype(lonM.deg)> lambda() const {
+		decltype(lonM.deg) lambda() const {
 			D_t<decltype(lonM.deg)> dlonM {};
 			dlonM = lonM;
-			return dlonM; 
+			return dlonM.deg; 
 		}
 
 		template <typename T0, typename T1>

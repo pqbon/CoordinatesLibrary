@@ -59,8 +59,14 @@ int main()
     std::cout << "testNavVec0 "s << testNavVec0 << " + testNavVec1 "s << testNavVec1 << " = testNavVecA "s << testNavVecA << std::endl;
 
     std::cout << "Maths test..." << std::endl;
-    CoordinatesNS::CoordinatesDMF LAX { DM_tF {33.0f, 57.0f},  DM_tF {-118.0f, 22.0f} };
+    CoordinatesNS::CoordinatesDMF LAX { DM_tF {33.0f, 57.0f},  DM_tF {-118.0f, 24.0f} };
     CoordinatesNS::CoordinatesDMF JFK { DM_tF {40.0f, 38.0f}, DM_tF {-73.0f, 47.0f} };
+
+    auto great_circle { grtcrcl_dist(LAX, JFK) };
+    auto great_circle2 { grtcrcl_dist_small(LAX, JFK) };
+
+    std::cout << "LAX ("s << LAX << ") JFK ("s << JFK << ") Great Circle "s << great_circle << std::endl;
+    std::cout << "LAX ("s << LAX << ") JFK ("s << JFK << ") Great Circle "s << great_circle2 << std::endl;
 }
 
 
