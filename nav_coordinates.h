@@ -166,7 +166,9 @@ namespace CoordinatesNS {
 	template <typename T>
 	D_t<T>& D_t<T>::operator=(const DM_t<T>& rhs)
 	{
-		this->deg = rhs.deg + (rhs.min / NavigationConstantsNS::deg_min<T>);
+		auto const stmp { rhs.deg };
+		auto const valtmp { std::abs(rhs.deg) + (rhs.min / NavigationConstantsNS::deg_min<T>) };
+		this->deg = std::copysign(valtmp, stmp);
 
 		return *this;
 	}
@@ -174,7 +176,9 @@ namespace CoordinatesNS {
 	template <typename T>
 	D_t<T>& D_t<T>::operator=(const DMS_t<T>& rhs)
 	{
-		this->deg = rhs.deg + (rhs.min / NavigationConstantsNS::deg_min<T>) + (rhs.sec / NavigationConstantsNS::deg_sec<T>);
+		auto const stmp { rhs.deg };
+		auto const valtmp { std::abs(rhs.deg) + (rhs.min / NavigationConstantsNS::deg_min<T>) + (rhs.sec / NavigationConstantsNS::deg_sec<T>) };
+		this->deg = std::copysign(valtmp, stmp);
 
 		return *this;
 	}
@@ -194,7 +198,7 @@ namespace CoordinatesNS {
 	template <typename T>
 	DM_t<T>& DM_t<T>::operator=(const D_t<T>& rhs)
 	{
-		this->deg = std::floor(rhs.deg) ;
+		this->deg = std::floor(rhs.deg);
 		this->min = std::abs(rhs.deg - this->deg) * NavigationConstantsNS::deg_min<T>;
 
 		return *this;

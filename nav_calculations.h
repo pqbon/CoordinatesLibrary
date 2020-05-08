@@ -23,8 +23,8 @@ namespace CoordinatesNS {
 		decltype(p0.phi()) const rlon0 { degress2radians(lon0) };
 		decltype(p0.phi()) const rlon1 { degress2radians(lon1) };
 
-		decltype(p0.phi()) const rlatdiff { std::abs(rlat0 - rlat1) };
-		decltype(p0.phi()) const rlondiff { std::abs(rlon0 - rlon1) };
+		decltype(p0.phi()) const rlatdiff { rlat0 - rlat1 };
+		decltype(p0.phi()) const rlondiff { rlon0 - rlon1 };
 		decltype(p0.phi()) const sin_latdiff { std::sin(rlatdiff / 2) };
 		decltype(p0.phi()) const sin_londiff { std::sin(rlondiff / 2) };
 		decltype(p0.phi()) const cos_lat0 { std::cos(rlat0) };
@@ -87,17 +87,18 @@ namespace CoordinatesNS {
 		decltype(p0.phi()) const rlon0 { degress2radians(lon0) };
 		decltype(p0.phi()) const rlon1 { degress2radians(lon1) };
 
-		decltype(p0.phi()) const rlatdiff { std::abs(rlat0 - rlat1) };
-		decltype(p0.phi()) const rlondiff { std::abs(rlon0 - rlon1) };
-		decltype(p0.phi()) const cos_londiff { std::cos(rlondiff) };
-		decltype(p0.phi()) const sin_londiff { std::sin(rlondiff) };
+		decltype(p0.phi()) const rlon0diff { rlon0 - rlon1 };
+		decltype(p0.phi()) const rlon1diff { rlon1 - rlon0 };
+		decltype(p0.phi()) const sin_londiff { std::sin(rlon1diff) };
+		decltype(p0.phi()) const cos_londiff { std::cos(rlon0diff) };
 		decltype(p0.phi()) const cos_lat0 { std::cos(rlat0) };
 		decltype(p0.phi()) const cos_lat1 { std::cos(rlat1) };
 		decltype(p0.phi()) const sin_lat0 { std::sin(rlat0) };
 		decltype(p0.phi()) const sin_lat1 { std::sin(rlat1) };
 		decltype(p0.phi()) const term0 { sin_lat0 * sin_lat1 };
 		decltype(p0.phi()) const term1 { cos_lat0 * cos_lat1 * cos_londiff };
-		decltype(p0.phi()) const dist_rad { std::asin(term0 + term1) };
+		decltype(p0.phi()) const tterm { term0 + term1 };
+		decltype(p0.phi()) const dist_rad { std::acos(tterm) };
 		decltype(p0.phi()) const dist_nm { radians2nm(dist_rad) };
 
 //We obtain the initial course, tc1, (at point 1) from point 1 to point 2 by the following.The formula fails if the initial point is a pole.We can special case this with:
@@ -126,12 +127,12 @@ namespace CoordinatesNS {
 			else {
 				tc1 = 2 * NavigationConstantsNS::my_pi<decltype(p0.phi())>;
 			}
-		}
-		if (sin_londiff < 0) {
-			tc1 = std::acos((sin_lat0 - sin_lat1 * cos_dist) / (sin_dist * cos_lat0));
-		}
-		else {
-			tc1 = { 2 * NavigationConstantsNS::my_pi<decltype(p0.phi())> - std::acos((sin_lat0 - sin_lat1 * cos_dist) / (sin_dist * cos_lat0)) };
+		} else {
+			if (sin_londiff < 0) {
+				tc1 = std::acos((sin_lat1 - sin_lat0 * cos_dist) / (sin_dist * cos_lat0));
+			} else {
+				tc1 = { 2 * NavigationConstantsNS::my_pi<decltype(p0.phi())> -std::acos((sin_lat1 - sin_lat0 * cos_dist) / (sin_dist * cos_lat0)) };
+			}
 		}
 
 		decltype(p0.phi()) const angle_deg { radians2degrees(tc1) };
