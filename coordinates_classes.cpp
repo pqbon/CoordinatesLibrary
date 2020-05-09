@@ -62,11 +62,13 @@ int main()
     CoordinatesNS::CoordinatesDMF LAX { DM_tF {33.0f, 57.0f},  DM_tF {-118.0f, 24.0f} };
     CoordinatesNS::CoordinatesDMF JFK { DM_tF {40.0f, 38.0f}, DM_tF {-73.0f, 47.0f} };
 
-    auto great_circle { grtcrcl_dist(LAX, JFK) };
-    auto great_circle2 { grtcrcl_dist_small(LAX, JFK) };
+    auto great_circle_sm { grtcrcl_dist_small_nm(LAX, JFK) };
+    auto great_circle { grtcrcl_dist_nm(LAX, JFK) };
+    auto great_circle_haversine { grtcrcl_dist_haversine_nm(LAX, JFK) };
+    auto rect_linear { rectl_dist_nm(LAX, JFK) };
+    auto rhumb_line { rhumb_dist_nm(LAX, JFK) };
 
-    std::cout << "LAX ("s << LAX << ") JFK ("s << JFK << ") Great Circle "s << great_circle << std::endl;
-    std::cout << "LAX ("s << LAX << ") JFK ("s << JFK << ") Great Circle "s << great_circle2 << std::endl;
+    std::cout << "LAX ("s << LAX << ") JFK ("s << JFK << ") Great Circle "s << great_circle << "nm  Small Great Circle "s << great_circle_sm << "nm Great Circle Haversine "s << great_circle_haversine << "nm Rectolinear "s << rect_linear << "nm Rhumb line "s << rhumb_line << "nm"s <<  std::endl;
 }
 
 

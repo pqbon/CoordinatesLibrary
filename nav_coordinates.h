@@ -53,13 +53,13 @@ namespace CoordinatesNS {
 		decltype(latM.deg) phi() const {
 			D_t<decltype(latM.deg)> dlatM {};
 			dlatM = latM;
-			return dlatM.deg; 
+			return degress2radians(dlatM.deg);
 		}
 
 		decltype(lonM.deg) lambda() const {
 			D_t<decltype(lonM.deg)> dlonM {};
 			dlonM = lonM;
-			return dlonM.deg; 
+			return degress2radians(dlonM.deg); 
 		}
 
 		template <typename T0, typename T1>
