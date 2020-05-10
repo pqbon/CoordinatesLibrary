@@ -13,7 +13,7 @@ using namespace std::literals::string_literals;
 
 int main()
 {
-    std::cout << "Hello World!\n";
+    std::cout << "Test code for navigation code" << std::endl;
 
     CoordinatesNS::CoordinatesDF test0DF { 40.7030526_ND, 74.0157877_WD }; //New York Battery Part
     CoordinatesNS::CoordinatesDF copytest0DF(test0DF);
