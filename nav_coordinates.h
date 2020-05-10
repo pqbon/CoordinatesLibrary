@@ -173,8 +173,8 @@ namespace CoordinatesNS {
 	template <typename T>
 	D_t<T>& D_t<T>::operator=(const DM_t<T>& rhs)
 	{
-		auto const stmp { rhs.deg };
-		auto const valtmp { std::abs(rhs.deg) + (rhs.min / NavigationConstantsNS::deg_min<T>) };
+		T const stmp { rhs.deg };
+		T const valtmp { std::fabs(rhs.deg) + (rhs.min / NavigationConstantsNS::deg_min<T>) };
 		this->deg = std::copysign(valtmp, stmp);
 
 		return *this;
@@ -183,8 +183,8 @@ namespace CoordinatesNS {
 	template <typename T>
 	D_t<T>& D_t<T>::operator=(const DMS_t<T>& rhs)
 	{
-		auto const stmp { rhs.deg };
-		auto const valtmp { std::abs(rhs.deg) + (rhs.min / NavigationConstantsNS::deg_min<T>) + (rhs.sec / NavigationConstantsNS::deg_sec<T>) };
+		T const stmp { rhs.deg };
+		T const valtmp { std::fabs(rhs.deg) + (rhs.min / NavigationConstantsNS::deg_min<T>) + (rhs.sec / NavigationConstantsNS::deg_sec<T>) };
 		this->deg = std::copysign(valtmp, stmp);
 
 		return *this;
@@ -205,8 +205,10 @@ namespace CoordinatesNS {
 	template <typename T>
 	DM_t<T>& DM_t<T>::operator=(const D_t<T>& rhs)
 	{
-		this->deg = std::floor(rhs.deg);
-		this->min = std::abs(rhs.deg - this->deg) * NavigationConstantsNS::deg_min<T>;
+		T const stmp { rhs.deg};
+		T const deg { std::fabs(rhs.deg) };
+		this->deg = std::copysign(std::floor(deg), stmp);
+		this->min = std::fmod(deg, static_cast<T>(1)) * NavigationConstantsNS::deg_min<T>;
 
 		return *this;
 	}
@@ -234,10 +236,12 @@ namespace CoordinatesNS {
 	template <typename T>
 	DMS_t<T>& DMS_t<T>::operator=(const D_t<T>& rhs)
 	{
-		this->deg = std::floor(rhs.deg);
-		T const min { std::abs(rhs.deg - this->deg) * NavigationConstantsNS::deg_min<T> };
+		T const stmp { rhs.deg};
+		T const deg { std::fabs(rhs.deg) };
+		this->deg = std::copysign(std::floor(deg), stmp);
+		T const min { std::fmod(deg, static_cast<T>(1)) * NavigationConstantsNS::deg_min<T> };
 		this->min = std::floor(min);
-		this->sec = ((min - std::floor(min)) * NavigationConstantsNS::min_sec<T>);
+		this->sec = std::fmod(min, static_cast<T>(1)) * NavigationConstantsNS::min_sec<T>;
 
 		return *this;
 	}
@@ -247,8 +251,8 @@ namespace CoordinatesNS {
 	{
 		this->deg = rhs.deg;
 		T const min { rhs.min };
-		this->min = std::floor(rhs.min);
-		this->sec = ((min - rhs.min) * NavigationConstantsNS::min_sec<T>);
+		this->min = std::floor(min);
+		this->sec = std::fmod(min, static_cast<T>(1)) * NavigationConstantsNS::min_sec<T>;
 
 		return *this;
 	}
@@ -280,8 +284,11 @@ namespace CoordinatesNS {
 	D_t<T>::operator DM_t<T>() const {
 		DM_t<T> ret {};
 
-		ret.deg = std::floor(deg);
-		ret.min = std::abs(deg - ret.deg) * NavigationConstantsNS::deg_min<T>;
+		T const stmp { deg };
+		T const ldeg { std::fabs(deg) };
+		ret.deg = std::copysign(std::floor(ldeg), stmp);
+		T const min { std::fmod(ldeg, static_cast<T>(1)) * NavigationConstantsNS::deg_min<T> };
+		ret.min = min;
 
 		return ret;
 	}
@@ -290,10 +297,12 @@ namespace CoordinatesNS {
 	D_t<T>::operator DMS_t<T>() const {
 		DMS_t<T> ret {};
 
-		ret.deg = std::floor(deg);
-		T const lmin { std::abs(deg - ret.deg) * NavigationConstantsNS::deg_min<T> };
-		ret.min = std::floor(lmin);
-		ret.sec = ((lmin - ret.min) * NavigationConstantsNS::min_sec<T>);
+		T const stmp { deg };
+		T const deg { std::fabs(deg) };
+		ret.deg = std::copysign(std::floor(deg), stmp);
+		T const min { std::fmod(deg, static_cast<T>(1)) * NavigationConstantsNS::deg_min<T> };
+		ret.min = std::floor(min);
+		ret.sec = std::fmod(min, static_cast<T>(1)) * NavigationConstantsNS::min_sec<T>;
 
 		return ret;
 	}
