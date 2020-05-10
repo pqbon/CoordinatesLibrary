@@ -65,10 +65,13 @@ int main()
     auto great_circle_sm { grtcrcl_dist_small_nm(LAX, JFK) };
     auto great_circle { grtcrcl_dist_nm(LAX, JFK) };
     auto great_circle_haversine { grtcrcl_dist_haversine_nm(LAX, JFK) };
+    auto great_circle_bearing { grtcrcl_init_brng(LAX, JFK) };
+    auto great_circle_midpoint { grtcrcl_midpoint(LAX, JFK) };
     auto rect_linear { rectl_dist_nm(LAX, JFK) };
     auto rhumb_line { rhumb_dist_nm(LAX, JFK) };
 
-    std::cout << "LAX ("s << LAX << ") JFK ("s << JFK << ") Great Circle "s << great_circle << "nm  Small Great Circle "s << great_circle_sm << "nm Great Circle Haversine "s << great_circle_haversine << "nm Rectolinear "s << rect_linear << "nm Rhumb line "s << rhumb_line << "nm"s <<  std::endl;
+    std::cout << "LAX ("s << LAX << ") JFK ("s << JFK << ") Great Circle "s << great_circle << "nm  Small Great Circle "s << great_circle_sm << "nm Great Circle Haversine "s << great_circle_haversine << "nm Inital bearing " << great_circle_bearing << " Midpoint " << great_circle_midpoint << std::endl;
+    std::cout << "Rectolinear "s << rect_linear << "nm Rhumb line "s << rhumb_line << "nm"s << std::endl;
 }
 
 

@@ -100,6 +100,8 @@ namespace CoordinatesNS {
 		template <typename TN>
 		friend std::ostream& operator<<(std::ostream& out, const D_t<TN>& coord);
 
+		operator DM_t<T>() const;
+		operator DMS_t<T>() const;
 		D_t<T>& operator=(const DM_t<T>& rhs);
 		D_t<T>& operator=(const DMS_t<T> & rhs);
 	};
@@ -125,6 +127,8 @@ namespace CoordinatesNS {
 		template <typename TN>
 		friend std::ostream& operator<<(std::ostream& out, const DM_t<TN>& coord);
 
+		operator D_t<T>() const;
+		operator DMS_t<T>() const;
 		DM_t<T>& operator=(const D_t<T>&rhs);
 		DM_t<T>& operator=(const DMS_t<T>&rhs);
 	};
@@ -150,6 +154,9 @@ namespace CoordinatesNS {
 		friend DMS_t<TN> operator+ (DMS_t<TN> lhs, const DMS_t<TN>& rhs);
 		template <typename TN>
 		friend std::ostream& operator<<(std::ostream& out, const DMS_t<TN>& coord);
+
+		operator D_t<T>() const;
+		operator DM_t<T>() const;
 
 		DMS_t<T>& operator=(const D_t<T>& rhs);
 		DMS_t<T>& operator=(const DM_t<T>& rhs);
@@ -269,6 +276,68 @@ namespace CoordinatesNS {
 		return out << coord.latM << ns_string  << " "s << coord.lonM << ew_string;
 	}
 
+	template <typename T>
+	D_t<T>::operator DM_t<T>() const {
+		DM_t<T> ret {};
+
+		ret.deg = std::floor(deg);
+		ret.min = std::abs(deg - ret.deg) * NavigationConstantsNS::deg_min<T>;
+
+		return ret;
+	}
+
+	template <typename T>
+	D_t<T>::operator DMS_t<T>() const {
+		DMS_t<T> ret {};
+
+		ret.deg = std::floor(deg);
+		T const lmin { std::abs(deg - ret.deg) * NavigationConstantsNS::deg_min<T> };
+		ret.min = std::floor(lmin);
+		ret.sec = ((lmin - ret.min) * NavigationConstantsNS::min_sec<T>);
+
+		return ret;
+	}
+
+	template <typename T>
+	DM_t<T>::operator D_t<T>() const {
+		D_t<T> ret {};
+		auto const stmp { deg };
+		auto const valtmp { std::abs(deg) + (min / NavigationConstantsNS::deg_min<T>) };
+		ret.deg = std::copysign(valtmp, stmp);
+
+		return ret;
+	}
+
+	template <typename T>
+	DM_t<T>::operator DMS_t<T>() const {
+		DMS_t<T> ret {};
+		ret.deg = deg;
+		T const lmin { std::floor(min) };
+		ret.min = lmin;
+		ret.sec = ((min - lmin) * NavigationConstantsNS::min_sec<T>);
+
+		return ret;
+	}
+
+	template <typename T>
+	DMS_t<T>::operator D_t<T>() const {
+		D_t<T> ret {};
+		auto const stmp { deg };
+		auto const valtmp { std::abs(deg) + (min / NavigationConstantsNS::deg_min<T>) + (sec / NavigationConstantsNS::deg_sec<T>) };
+		ret.deg = std::copysign(valtmp, stmp);
+
+		return ret;
+	}
+
+	template <typename T>
+	DMS_t<T>::operator DM_t<T>() const {
+		DM_t<T> ret {};
+		ret.deg = deg;
+		ret.min = min + (sec / NavigationConstantsNS::min_sec<T>);
+
+		return ret;
+	}
+
 	template <typename TN>
 	std::ostream& operator<<(std::ostream& out, const D_t<TN>& coord) {
 		return out << std::abs(coord.deg);
@@ -283,4 +352,5 @@ namespace CoordinatesNS {
 	std::ostream& operator<<(std::ostream& out, const DMS_t<TN>& coord) {
 		return out << std::abs(coord.deg) << ":"s << coord.min << ":"s << coord.sec;
 	}
+
 } //CoordinatesNS

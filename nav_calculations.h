@@ -109,6 +109,51 @@ namespace CoordinatesNS {
 		return dist_nm;
 	}
 
+	template <typename T>
+	auto grtcrcl_init_brng(T p0, T p1) -> decltype(p0.phi()) {
+		decltype(p0.phi()) const rlat0 { p0.phi() };
+		decltype(p0.phi()) const rlat1 { p1.phi() };
+		decltype(p0.phi()) const rlon0 { p0.lambda() };
+		decltype(p0.phi()) const rlon1 { p1.lambda() };
+
+		decltype(p0.phi()) const y_ { std::sin(rlon1 - rlon0) * std::cos(rlat1) };
+		decltype(p0.phi()) const x_ { std::cos(rlat0) * std::sin(rlat1) - std::sin(rlat0) * std::cos(rlat1) * std::cos(rlon1 - rlon0) };
+		decltype(p0.phi()) const theta { std::atan2(y_, x_) };
+
+		decltype(p0.phi()) const brng { std::remainder(radians2degrees(theta) + static_cast<decltype(p0.phi())>(360), static_cast<decltype(p0.phi())>(360)) };
+
+		return brng;
+	}
+
+	template <typename T>
+	auto grtcrcl_midpoint(T p0, T p1) -> T {
+		decltype(p0.phi()) const rlat0 { p0.phi() };
+		decltype(p0.phi()) const rlat1 { p1.phi() };
+		decltype(p0.phi()) const rlon0 { p0.lambda() };
+		decltype(p0.phi()) const rlon1 { p1.lambda() };
+
+		decltype(p0.phi()) const Bx { std::cos(rlat1) * std::cos(rlon1 - rlon0) };
+		decltype(p0.phi()) const By { std::cos(rlat1) * std::sin(rlon1 - rlon0) };
+
+		decltype(p0.phi()) const rlat3 { std::atan2(std::sin(rlat0) + std::sin(rlat1), std::sqrt(std::pow(std::cos(rlat0) + Bx, 2) + (By * Bx))) };
+
+		decltype(p0.phi()) const rlon3 { rlon0 + std::atan2(By, std::cos(rlat0) - Bx) };
+
+		decltype(p0.phi()) const lat3 { radians2degrees(rlat3) };
+		decltype(p0.phi()) const lon3 { std::remainder((radians2degrees(rlon3) + static_cast<decltype(p0.phi())>(540)), static_cast<decltype(p0.phi())>(360)) - static_cast<decltype(p0.phi())>(180) };
+
+		
+		CoordinatesNS::D_t<decltype(p0.phi())> const lat3D { lat3 };
+		CoordinatesNS::D_t<decltype(p0.phi())> const lon3D { lon3 };
+
+		T ret {};
+		ret.lat(lat3D);
+		ret.lon(lon3D);
+
+		return ret;
+	}
+
+
 //	template <typename T>
 //	auto grtcrcl_dist_small(T p0, T p1) -> Nav_vec_t<decltype(p0.phi())> {
 //		//d = 2 * asin(sqrt((sin[(lat1 - lat2) / 2]) ^ 2 +
