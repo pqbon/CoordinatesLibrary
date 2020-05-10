@@ -173,6 +173,26 @@ namespace CoordinatesNS {
 	}
 
 	template <typename T>
+	auto grtcrcl_xte(T p0, T p1, T p2) -> decltype(p0.phi()) {
+		// XTD = asin(sin(dist_AD)*sin(crs_AD-crs_AB))
+		decltype(p0.phi()) const rlat0 { p0.phi() };
+		decltype(p0.phi()) const rlat1 { p1.phi() };
+		decltype(p0.phi()) const rlat2 { p2.phi() };
+		decltype(p0.phi()) const rlon0 { p0.lambda() };
+		decltype(p0.phi()) const rlon1 { p1.lambda() };
+		decltype(p0.phi()) const rlon2 { p2.lambda() };
+
+		decltype(p0.phi()) const dist_AD { nm2radians(grtcrcl_dist_small_nm(p0, p2)) };
+		decltype(p0.phi()) const crs_AD { degrees2radians(grtcrcl_init_brng(p0, p2)) };
+		decltype(p0.phi()) const crs_AB { degrees2radians(grtcrcl_init_brng(p0, p1)) };
+
+		decltype(p0.phi()) const xteR { std::asin(std::sin(dist_AD) * std::sin(crs_AD - crs_AB)) };
+		decltype(p0.phi()) const xte { radians2degrees(xteR) };
+
+		return xte;
+	}
+
+	template <typename T>
 	auto rectl_dist_nm(T p0, T p1) -> decltype(p0.phi()) {
 		decltype(p0.phi()) const rlat0 { p0.phi() };
 		decltype(p0.phi()) const rlat1 { p1.phi() };
