@@ -68,11 +68,15 @@ int main()
     auto great_circle_bearing { grtcrcl_init_brng(LAX, JFK) };
     auto great_circle_midpoint { grtcrcl_midpoint(LAX, JFK) };
     auto great_circle_frac { grtcrcl_frac_point(LAX, JFK, 0.50, great_circle) };
-    Nav_vec_tF LAX_JFK { great_circle, great_circle_bearing };
-    auto calc_jfk { grtcrcl_start_vec(LAX, LAX_JFK) };
+    Nav_vec_tF CLAX_JFK { great_circle, great_circle_bearing };
+    auto calc_jfk { grtcrcl_start_vec(LAX, CLAX_JFK) };
     auto rect_linear { rectl_dist_nm(LAX, JFK) };
     auto rhumb_line { rhumb_dist_nm(LAX, JFK) };
+    auto rhumb_brg { rhumb_brng(LAX, JFK) };
+    auto rhumb_mp { rhumb_midpoint(LAX, JFK) };
+    Nav_vec_tF RLAX_JFK { rhumb_line, rhumb_brg };
+    auto rhumb_calc_jfk { rhumb_start_vec(LAX, RLAX_JFK) };
 
     std::cout << "LAX ("s << LAX << ") JFK ("s << JFK << ") Great Circle "s << great_circle << "nm  Small Great Circle "s << great_circle_sm << "nm Great Circle Haversine "s << great_circle_haversine << "nm Inital bearing " << great_circle_bearing << " Midpoint " << great_circle_midpoint << " Midpoint (frac 50%) " << great_circle_frac << " Calc JFK (" << calc_jfk << ")" << std::endl;
-    std::cout << "Rectolinear "s << rect_linear << "nm Rhumb line "s << rhumb_line << "nm"s << std::endl;
+    std::cout << "Rectolinear "s << rect_linear << "nm Rhumb line "s << rhumb_line << "nm Rhumb bearing "s << rhumb_brg << " Rhumb midpoint "s << rhumb_mp << " Rhumb JFK "s << rhumb_calc_jfk << std::endl;
 }
