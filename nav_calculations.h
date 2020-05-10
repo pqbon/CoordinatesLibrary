@@ -10,6 +10,8 @@
 
 
 namespace CoordinatesNS {
+	using namespace CoordinatesNS::NavigationConstantsNS;
+
 	template <typename T>
 	auto grtcrcl_dist_small_nm(T p0, T p1) -> decltype(p0.phi()) {
 		//d = 2 * asin(sqrt((sin[(lat1 - lat2) / 2]) ^ 2 +
@@ -202,7 +204,7 @@ namespace CoordinatesNS {
 		decltype(p0.phi()) const distance_North { R1 * drlat };
 		decltype(p0.phi()) const distance_East { R2 * std::cos(rlat0) * drlon };
 
-		decltype(p0.phi()) const rbrng { std::remainder(std::atan2(distance_East, distance_North), 2 * NavigationConstantsNS::my_pi<decltype(p0.phi())>) };
+		decltype(p0.phi()) const rbrng { std::remainder(std::atan2(distance_East, distance_North), 2 * my_pi<decltype(p0.phi())>) };
 
 		decltype(p0.phi()) const dbrng { radians2deg(rbrng) };
 
@@ -224,14 +226,14 @@ namespace CoordinatesNS {
 
 		decltype(p0.phi()) const delta_phi { rlat1 - rlat0 };
 
-		decltype(p0.phi()) const delta_psi { std::log(std::tan(NavigationConstantsNS::my_pi<decltype(p0.phi())> / 4 + rlat1 / 2) / std::tan(NavigationConstantsNS::my_pi<decltype(p0.phi())> / 4 + rlat0 / 2)) };
+		decltype(p0.phi()) const delta_psi { std::log(std::tan(my_pi<decltype(p0.phi())> / 4 + rlat1 / 2) / std::tan(my_pi<decltype(p0.phi())> / 4 + rlat0 / 2)) };
 
 		constexpr decltype(p0.phi()) eps { std::numeric_limits<decltype(p0.phi())>::min() };
-		decltype(p0.phi()) const q { (std::abs(delta_psi) > eps) ? (delta_phi) / (delta_psi) : std::cos(rlat0) };
+		decltype(p0.phi()) const q { (std::fabs(delta_psi) > eps) ? (delta_phi) / (delta_psi) : std::cos(rlat0) };
 
 		decltype(p0.phi()) delta_lambda { rlon1 - rlon0 };
-		if (std::abs(rlon1 - rlon0) > NavigationConstantsNS::my_pi<decltype(p0.phi())>) {
-			delta_lambda = (delta_lambda > 0) ? -(2 * NavigationConstantsNS::my_pi<decltype(p0.phi())> -delta_lambda) : (2 * NavigationConstantsNS::my_pi<decltype(p0.phi())> -delta_lambda);
+		if (std::fabs(rlon1 - rlon0) > my_pi<decltype(p0.phi())>) {
+			delta_lambda = (delta_lambda > 0) ? -(2 * my_pi<decltype(p0.phi())> -delta_lambda) : (2 * my_pi<decltype(p0.phi())> -delta_lambda);
 		}
 
 		decltype(p0.phi()) const dist_rad { std::hypot(delta_phi, q * delta_lambda) };
@@ -248,14 +250,14 @@ namespace CoordinatesNS {
 		decltype(p0.phi()) const rlon0 { p0.lambda() };
 		decltype(p0.phi()) const rlon1 { p1.lambda() };
 
-		decltype(p0.phi()) const term0 { NavigationConstantsNS::my_pi<decltype(p0.phi())> / 4 + rlat1 / 2 };
-		decltype(p0.phi()) const term1 { NavigationConstantsNS::my_pi<decltype(p0.phi())> / 4 + rlat0 / 2 };
+		decltype(p0.phi()) const term0 { my_pi<decltype(p0.phi())> / 4 + rlat1 / 2 };
+		decltype(p0.phi()) const term1 { my_pi<decltype(p0.phi())> / 4 + rlat0 / 2 };
 
 		decltype(p0.phi()) const deltaPsi { std::log(std::tan(term0) / std::tan(term1)) };
 
 		decltype(p0.phi()) deltaLon { rlon1 - rlon0 };
-		if (std::fabs(deltaLon) > NavigationConstantsNS::my_pi<decltype(p0.phi())>) {
-			deltaLon = deltaLon > 0 ? -(2 * NavigationConstantsNS::my_pi<decltype(p0.phi())> -deltaLon) : (2 * NavigationConstantsNS::my_pi<decltype(p0.phi())> -deltaLon);
+		if (std::fabs(deltaLon) > my_pi<decltype(p0.phi())>) {
+			deltaLon = deltaLon > 0 ? -(2 * my_pi<decltype(p0.phi())> -deltaLon) : (2 * my_pi<decltype(p0.phi())> -deltaLon);
 		}
 
 		decltype(p0.phi()) const theta { std::atan2(deltaLon, deltaPsi) };
@@ -276,7 +278,7 @@ namespace CoordinatesNS {
 
 		decltype(p0.phi()) const rlat1t { rlat0 + diffLat };
 
-		decltype(p0.phi()) const diffPsi { std::log(std::tan(rlat1t / 2 + NavigationConstantsNS::my_pi<decltype(p0.phi())> / 4) / std::tan(rlat0 / 2 + NavigationConstantsNS::my_pi<decltype(p0.phi())> / 4)) };
+		decltype(p0.phi()) const diffPsi { std::log(std::tan(rlat1t / 2 + my_pi<decltype(p0.phi())> / 4) / std::tan(rlat0 / 2 + my_pi<decltype(p0.phi())> / 4)) };
 		constexpr decltype(p0.phi()) eps { std::numeric_limits<decltype(p0.phi())>::min() };
  		decltype(p0.phi()) const q_ { (std::fabs(diffPsi) > eps) ? diffLat / diffPsi : std::cos(rlat0) };
 
@@ -285,8 +287,8 @@ namespace CoordinatesNS {
 		decltype(p0.phi()) const rlon1 { rlon0 + diffLon };
 
 		decltype(p0.phi()) rlat1 { rlat1t };
-		if (std::fabs(rlat1) > NavigationConstantsNS::my_pi<decltype(p0.phi())> / 2)
-			rlat1 = rlat1t > 0 ? NavigationConstantsNS::my_pi<decltype(p0.phi())> - rlat1t : -NavigationConstantsNS::my_pi<decltype(p0.phi())> - rlat1t;
+		if (std::fabs(rlat1) > my_pi<decltype(p0.phi())> / 2)
+			rlat1 = rlat1t > 0 ? my_pi<decltype(p0.phi())> - rlat1t : -my_pi<decltype(p0.phi())> - rlat1t;
 
 		decltype(p0.phi()) const lat1 { radians2degrees(rlat1) };
 		decltype(p0.phi()) const lon1 { std::remainder(radians2degrees(rlon1) + static_cast<decltype(p0.phi())>(540), static_cast<decltype(p0.phi())>(360)) - static_cast<decltype(p0.phi())>(180) };
@@ -308,14 +310,14 @@ namespace CoordinatesNS {
 		decltype(p0.phi()) rlon0 { p0.lambda() };
 		decltype(p0.phi()) const rlon1 { p1.lambda() };
 
-		if (std::fabs(rlon1 - rlon0) > NavigationConstantsNS::my_pi<decltype(p0.phi())> * 2) {
-			rlon0 += 2 * NavigationConstantsNS::my_pi<decltype(p0.phi())>;
+		if (std::fabs(rlon1 - rlon0) > my_pi<decltype(p0.phi())> * 2) {
+			rlon0 += 2 * my_pi<decltype(p0.phi())>;
 		}
 
 		decltype(p0.phi()) const rlat2 { (rlat0 + rlat1) / 2 };
-		decltype(p0.phi()) const f1 {std::tan(NavigationConstantsNS::my_pi<decltype(p0.phi())> / 4 + rlat0 / 2) };
-		decltype(p0.phi()) const f2 { std::tan(NavigationConstantsNS::my_pi<decltype(p0.phi())> / 4 + rlat1 / 2) };
-		decltype(p0.phi()) const f3 { std::tan(NavigationConstantsNS::my_pi<decltype(p0.phi())> / 4 + rlat2 / 2) };
+		decltype(p0.phi()) const f1 {std::tan(my_pi<decltype(p0.phi())> / 4 + rlat0 / 2) };
+		decltype(p0.phi()) const f2 { std::tan(my_pi<decltype(p0.phi())> / 4 + rlat1 / 2) };
+		decltype(p0.phi()) const f3 { std::tan(my_pi<decltype(p0.phi())> / 4 + rlat2 / 2) };
 
 		decltype(p0.phi()) rlon2 { ((rlon1 - rlon0) * std::log(f3) + rlon0 * std::log(f2) - rlon1 * std::log(f1)) / std::log(f2 / f1) };
 

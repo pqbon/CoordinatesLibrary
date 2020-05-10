@@ -79,7 +79,6 @@ namespace CoordinatesNS {
 	//// M = abs(Ds - D) * 60
 	////
 
-
 	template <typename T>
 	struct D_t {
 		T deg {};
@@ -354,12 +353,12 @@ namespace CoordinatesNS {
 
 	template <typename TN>
 	std::ostream& operator<<(std::ostream& out, const DM_t<TN>& coord) {
-		return out << std::abs(coord.deg) << ":"s << coord.min;
+		return out << std::abs(coord.deg) << " "s << coord.min << "'"s;
 	}
 
 	template <typename TN>
 	std::ostream& operator<<(std::ostream& out, const DMS_t<TN>& coord) {
-		return out << std::abs(coord.deg) << ":"s << coord.min << ":"s << coord.sec;
+		return out << std::abs(coord.deg) << " "s << coord.min << "' "s << coord.sec << "\""s;
 	}
 
 } //CoordinatesNS
