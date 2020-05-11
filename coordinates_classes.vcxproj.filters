@@ -18,9 +18,6 @@
     <ClCompile Include="coordinates_classes.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="coordinates.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="nav_vectors.h">
