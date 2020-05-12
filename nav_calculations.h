@@ -12,8 +12,8 @@
 namespace CoordinatesNS {
 	using namespace CoordinatesNS::NavigationConstantsNS;
 
-	template <typename T>
-	auto grtcrcl_dist_small_nm(T p0, T p1) -> decltype(p0.phi()) {
+	template <typename T0, typename T1>
+	auto grtcrcl_dist_small_nm(T0 const& p0, T1 const& p1) -> decltype(p0.phi()) {
 		//d = 2 * asin(sqrt((sin[(lat1 - lat2) / 2]) ^ 2 +
 		//	cos(lat1) * cos(lat2) * (sin[(lon1 - lon2) / 2]) ^ 2))
 		decltype(p0.phi()) const rlat0 { p0.phi() };
@@ -33,8 +33,8 @@ namespace CoordinatesNS {
 		return dist_nm;
 	}
 
-	template <typename T>
-	auto grtcrcl_dist_nm(T p0, T p1) -> decltype(p0.phi()) {
+	template <typename T0, typename T1>
+	auto grtcrcl_dist_nm(T0 const& p0, T1 const& p1) -> decltype(p0.phi()) {
 		//d=acos(sin(lat1)*sin(lat2)+cos(lat1)*cos(lat2)*cos(lon1-lon2))
 		decltype(p0.phi()) const rlat0 { p0.phi() };
 		decltype(p0.phi()) const rlat1 { p1.phi() };
@@ -53,8 +53,8 @@ namespace CoordinatesNS {
 		return dist_nm;
 	}
 
-	template <typename T>
-	auto grtcrcl_dist_haversine_nm(T p0, T p1) -> decltype(p0.phi()) {
+	template <typename T0, typename T1>
+	auto grtcrcl_dist_haversine_nm(T0 const& p0, T1 const& p1) -> decltype(p0.phi()) {
 		decltype(p0.phi()) const rlat0 { p0.phi() };
 		decltype(p0.phi()) const rlat1 { p1.phi() };
 		decltype(p0.phi()) const rlon0 { p0.lambda() };
@@ -71,8 +71,8 @@ namespace CoordinatesNS {
 		return dist_nm;
 	}
 
-	template <typename T>
-	auto grtcrcl_init_brng(T p0, T p1) -> decltype(p0.phi()) {
+	template <typename T0, typename T1>
+	auto grtcrcl_init_brng(T0 const& p0, T1 const& p1) -> decltype(p0.phi()) {
 		decltype(p0.phi()) const rlat0 { p0.phi() };
 		decltype(p0.phi()) const rlat1 { p1.phi() };
 		decltype(p0.phi()) const rlon0 { p0.lambda() };
@@ -87,8 +87,8 @@ namespace CoordinatesNS {
 		return brng;
 	}
 
-	template <typename T>
-	auto grtcrcl_midpoint(T p0, T p1) -> T {
+	template <typename T0, typename T1>
+	auto grtcrcl_midpoint(T0 const& p0, T1 const& p1) -> T0 {
 		decltype(p0.phi()) const rlat0 { p0.phi() };
 		decltype(p0.phi()) const rlat1 { p1.phi() };
 		decltype(p0.phi()) const rlon0 { p0.lambda() };
@@ -108,15 +108,15 @@ namespace CoordinatesNS {
 		CoordinatesNS::D_t<decltype(p0.phi())> const lat2D { lat2 };
 		CoordinatesNS::D_t<decltype(p0.phi())> const lon2D { lon2 };
 
-		T ret {};
+		T0 ret {};
 		ret.lat(lat2D);
 		ret.lon(lon2D);
 
 		return ret;
 	}
 
-	template <typename T>
-	auto grtcrcl_frac_point(T p0, T p1, decltype(p0.phi()) frac, decltype(p0.phi()) dist) -> T {
+	template <typename T0, typename T1>
+	auto grtcrcl_frac_point(T0 const& p0, T1 const& p1, decltype(p0.phi()) const frac, decltype(p0.phi()) const dist) -> T0 {
 		assert(frac < static_cast<decltype(p0.phi())>(1));
 		assert(frac > static_cast<decltype(p0.phi())>(0));
 
@@ -142,7 +142,7 @@ namespace CoordinatesNS {
 		CoordinatesNS::D_t<decltype(p0.phi())> const lat2D { lat2 };
 		CoordinatesNS::D_t<decltype(p0.phi())> const lon2D { lon2 };
 
-		T ret {};
+		T0 ret {};
 		ret.lat(lat2D);
 		ret.lon(lon2D);
 
@@ -150,7 +150,7 @@ namespace CoordinatesNS {
 	}
 
 	template <typename T0, typename T1>
-	auto grtcrcl_start_vec(T0 p0,  T1 vec) -> T0 {
+	auto grtcrcl_start_vec(T0 const& p0,  T1 const& vec) -> T0 {
 		decltype(p0.phi()) const rlat0 { p0.phi() };
 		decltype(p0.phi()) const rlon0 { p0.lambda() };
 		decltype(p0.phi()) const theta { degress2radians(vec.direction) };
@@ -172,8 +172,8 @@ namespace CoordinatesNS {
 		return ret;
 	}
 
-	template <typename T>
-	auto grtcrcl_xte(T p0, T p1, T p2) -> decltype(p0.phi()) {
+	template <typename T0, typename T1, typename T2>
+	auto grtcrcl_xte(T0 const& p0, T1 const& p1, T2 const& p2) -> decltype(p0.phi()) {
 		// XTD = asin(sin(dist_AD)*sin(crs_AD-crs_AB))
 		decltype(p0.phi()) const rlat0 { p0.phi() };
 		decltype(p0.phi()) const rlat1 { p1.phi() };
@@ -192,8 +192,8 @@ namespace CoordinatesNS {
 		return xte;
 	}
 
-	template <typename T>
-	auto rectl_dist_nm(T p0, T p1) -> decltype(p0.phi()) {
+	template <typename T0, typename T1>
+	auto rectl_dist_nm(T0 const& p0, T1 const& p1) -> decltype(p0.phi()) {
 		decltype(p0.phi()) const rlat0 { p0.phi() };
 		decltype(p0.phi()) const rlat1 { p1.phi() };
 		decltype(p0.phi()) const rlon0 { p0.lambda() };
@@ -208,8 +208,8 @@ namespace CoordinatesNS {
 		return dist_nm;
 	}
 
-	template <typename T>
-	auto rectl_brng(T p0, T p1) -> decltype(p0.phi()) {
+	template <typename T0, typename T1>
+	auto rectl_brng(T0 const& p0, T1 const& p1) -> decltype(p0.phi()) {
 		decltype(p0.phi()) const rlat0 { p0.phi() };
 		decltype(p0.phi()) const rlat1 { p1.phi() };
 		decltype(p0.phi()) const rlon0 { p0.lambda() };
@@ -231,8 +231,8 @@ namespace CoordinatesNS {
 		return dbrng;
 	}
 
-	template <typename T>
-	auto rhumb_dist_nm(T p0, T p1) -> decltype(p0.phi()) {
+	template <typename T0, typename T1>
+	auto rhumb_dist_nm(T0 const& p0, T1 const& p1) -> decltype(p0.phi()) {
 		//if (abs(lat2 - lat1) < sqrt(TOL)) {
 		//	q = cos(lat1)
 		//} else {
@@ -262,8 +262,8 @@ namespace CoordinatesNS {
 		return dist_nm;
 	}
 
-	template <typename T>
-	auto rhumb_brng(T p0, T p1) -> decltype(p0.phi()) {
+	template <typename T0, typename T1>
+	auto rhumb_brng(T0 const& p0, T1 const& p1) -> decltype(p0.phi()) {
 		//tc= mod(atan2(lon1-lon2,log(tan(lat2/2+pi/4)/tan(lat1/2+pi/4))),2*pi)
 		decltype(p0.phi()) const rlat0 { p0.phi() };
 		decltype(p0.phi()) const rlat1 { p1.phi() };
@@ -288,7 +288,7 @@ namespace CoordinatesNS {
 	}
 
 	template <typename T0, typename T1>
-	auto rhumb_start_vec(T0 p0, T1 vec) -> T0 {
+	auto rhumb_start_vec(T0 const& p0, T1 const& vec) -> T0 {
 		decltype(p0.phi()) const rlat0 { p0.phi() };
 		decltype(p0.phi()) const rlon0 { p0.lambda() };
 		decltype(p0.phi()) const theta { degress2radians(vec.direction) };
@@ -323,8 +323,8 @@ namespace CoordinatesNS {
 		return ret;
 	}
 
-	template <typename T>
-	auto rhumb_midpoint(T p0, T p1) -> T {
+	template <typename T0, typename T1>
+	auto rhumb_midpoint(T0 const& p0, T1 const& p1) -> T0 {
 		decltype(p0.phi()) const rlat0 { p0.phi() };
 		decltype(p0.phi()) const rlat1 { p1.phi() };
 		decltype(p0.phi()) rlon0 { p0.lambda() };
@@ -351,7 +351,7 @@ namespace CoordinatesNS {
 		CoordinatesNS::D_t<decltype(p0.phi())> const lat2D { lat2 };
 		CoordinatesNS::D_t<decltype(p0.phi())> const lon2D { lon2 };
 
-		T ret {};
+		T0 ret {};
 		ret.lat(lat2D);
 		ret.lon(lon2D);
 
