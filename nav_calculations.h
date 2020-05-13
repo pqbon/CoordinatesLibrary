@@ -103,11 +103,10 @@ namespace CoordinatesNS {
 
 		decltype(p0.phi()) const lat2 { radians2degrees(rlat2) };
 		decltype(p0.phi()) const lon2 { radians2degrees(rlon2) };
-		//decltype(p0.phi()) const lon2 { std::remainder((radians2degrees(rlon2) + static_cast<decltype(p0.phi())>(540)), static_cast<decltype(p0.phi())>(360)) - static_cast<decltype(p0.phi())>(180) };
 
 
-		CoordinatesNS::D_t<decltype(p0.phi())> const lat2D { lat2 };
-		CoordinatesNS::D_t<decltype(p0.phi())> const lon2D { lon2 };
+		CoordinatesNS::D_t<decltype(p0.phi())> const lat2D { lat2, CoordinatesType::LATITUDE };
+		CoordinatesNS::D_t<decltype(p0.phi())> const lon2D { lon2, CoordinatesType::LONGITUDE };
 
 		T0 ret {};
 		ret.lat(lat2D);
@@ -140,8 +139,8 @@ namespace CoordinatesNS {
 		decltype(p0.phi()) const lon2 { radians2degrees(rlon2) };
 
 
-		CoordinatesNS::D_t<decltype(p0.phi())> const lat2D { lat2 };
-		CoordinatesNS::D_t<decltype(p0.phi())> const lon2D { lon2 };
+		CoordinatesNS::D_t<decltype(p0.phi())> const lat2D { lat2, CoordinatesType::LATITUDE };
+		CoordinatesNS::D_t<decltype(p0.phi())> const lon2D { lon2, CoordinatesType::LONGITUDE };
 
 		T0 ret {};
 		ret.lat(lat2D);
@@ -161,10 +160,9 @@ namespace CoordinatesNS {
 		decltype(p0.phi()) const rlon1 { rlon0 + std::atan2(std::sin(theta) * std::sin(delta) * std::cos(rlat0), std::cos(delta) - std::sin(rlat0) * std::sin(rlat1)) };
 		decltype(p0.phi()) const lat1 { radians2degrees(rlat1) };
 		decltype(p0.phi()) const lon1 { radians2degrees(rlon1) };
-		//decltype(p0.phi()) const lon1 { std::remainder(radians2degrees(rlon1) + static_cast<decltype(p0.phi())>(540), static_cast<decltype(p0.phi())>(360)) - static_cast<decltype(p0.phi())>(180) };
 
-		CoordinatesNS::D_t<decltype(p0.phi())> const lat1D { lat1 };
-		CoordinatesNS::D_t<decltype(p0.phi())> const lon1D { lon1 };
+		CoordinatesNS::D_t<decltype(p0.phi())> const lat1D { lat1, CoordinatesType::LATITUDE };
+		CoordinatesNS::D_t<decltype(p0.phi())> const lon1D { lon1, CoordinatesType::LONGITUDE };
 
 		T0 ret {};
 		ret.lat(lat1D);
@@ -313,10 +311,9 @@ namespace CoordinatesNS {
 
 		decltype(p0.phi()) const lat1 { radians2degrees(rlat1) };
 		decltype(p0.phi()) const lon1 { radians2degrees(rlon1) };
-		//decltype(p0.phi()) const lon1 { std::remainder(radians2degrees(rlon1) + static_cast<decltype(p0.phi())>(540), static_cast<decltype(p0.phi())>(360)) - static_cast<decltype(p0.phi())>(180) };
 
-		CoordinatesNS::D_t<decltype(p0.phi())> const lat1D { lat1 };
-		CoordinatesNS::D_t<decltype(p0.phi())> const lon1D { lon1 };
+		CoordinatesNS::D_t<decltype(p0.phi())> const lat1D { lat1, CoordinatesType::LATITUDE };
+		CoordinatesNS::D_t<decltype(p0.phi())> const lon1D { lon1, CoordinatesType::LONGITUDE };
 
 		T0 ret {};
 		ret.lat(lat1D);
@@ -337,7 +334,7 @@ namespace CoordinatesNS {
 		}
 
 		decltype(p0.phi()) const rlat2 { (rlat0 + rlat1) / 2 };
-		decltype(p0.phi()) const f1 {std::tan(my_pi<decltype(p0.phi())> / 4 + rlat0 / 2) };
+		decltype(p0.phi()) const f1 { std::tan(my_pi<decltype(p0.phi())> / 4 + rlat0 / 2) };
 		decltype(p0.phi()) const f2 { std::tan(my_pi<decltype(p0.phi())> / 4 + rlat1 / 2) };
 		decltype(p0.phi()) const f3 { std::tan(my_pi<decltype(p0.phi())> / 4 + rlat2 / 2) };
 
@@ -349,7 +346,6 @@ namespace CoordinatesNS {
 
 		decltype(p0.phi()) const lat2 { radians2degrees(rlat2) };
 		decltype(p0.phi()) const lon2 { radians2degrees(rlon2) };
-		//decltype(p0.phi()) const lon2 { std::remainder(radians2degrees(rlon2) + static_cast<decltype(p0.phi())>(540), static_cast<decltype(p0.phi())>(360)) - static_cast<decltype(p0.phi())>(180) };
 
 		CoordinatesNS::D_t<decltype(p0.phi())> const lat2D { lat2 };
 		CoordinatesNS::D_t<decltype(p0.phi())> const lon2D { lon2 };

@@ -20,29 +20,29 @@ int main()
 
     CoordinatesNS::CoordinatesDF test0DF { 40.7030526_ND, 74.0157877_WD }; //New York Battery Part
     CoordinatesNS::CoordinatesDF copytest0DF(test0DF);
-    //CoordinatesNS::CoordinatesDMF copytest0DMF(test0DF);
-    CoordinatesNS::CoordinatesDMF copytest0DMF;
-    convert(copytest0DMF, test0DF);
-    //CoordinatesNS::CoordinatesDMSF copytest0DMSF(test0DF);
-    CoordinatesNS::CoordinatesDMSF copytest0DMSF;
-    convert(copytest0DMSF, test0DF);
+    CoordinatesNS::CoordinatesDMF copytest0DMF(test0DF);
+    //CoordinatesNS::CoordinatesDMF copytest0DMF;
+    //convert(copytest0DMF, test0DF);
+    CoordinatesNS::CoordinatesDMSF copytest0DMSF(test0DF);
+    //CoordinatesNS::CoordinatesDMSF copytest0DMSF;
+    //convert(copytest0DMSF, test0DF);
 
     CoordinatesNS::CoordinatesDMF test1DMF { DM_tF {51.0f, 30.11666666666666666666666666f}, DM_tF {0.0f, 5.366666666666666f} }; //London Gallons Hill 51.5014684 0.0912972
-    //CoordinatesNS::CoordinatesDF copytest1DF(test1DMF);
-    CoordinatesNS::CoordinatesDF copytest1DF;
-    convert(copytest1DF, test1DMF);
+    CoordinatesNS::CoordinatesDF copytest1DF(test1DMF);
+    //CoordinatesNS::CoordinatesDF copytest1DF;
+    //convert(copytest1DF, test1DMF);
     CoordinatesNS::CoordinatesDMF copytest1DMF(test1DMF);
-    //CoordinatesNS::CoordinatesDMSF copytest1DMSF(test1DMF);
-    CoordinatesNS::CoordinatesDMSF copytest1DMSF;
-    convert(copytest1DMSF, test1DMF);
+    CoordinatesNS::CoordinatesDMSF copytest1DMSF(test1DMF);
+    //CoordinatesNS::CoordinatesDMSF copytest1DMSF;
+    //convert(copytest1DMSF, test1DMF);
 
     CoordinatesNS::CoordinatesDMSF test2DMSF { DMS_tF {52.0f, 12.0f, 17.0f}, DMS_tF {0.0f, 7.0f, 2.0f} }; //Cambridge Kings College Catherderal front lawn
-    //CoordinatesNS::CoordinatesDF copytest2DF { test2DMSF };
-    CoordinatesNS::CoordinatesDF copytest2DF;
-    convert(copytest2DF, test2DMSF);
-    //CoordinatesNS::CoordinatesDMF copytest2DMF { test2DMSF };
-    CoordinatesNS::CoordinatesDMF copytest2DMF;
-    convert(copytest2DMF, test2DMSF);
+    CoordinatesNS::CoordinatesDF copytest2DF { test2DMSF };
+    //CoordinatesNS::CoordinatesDF copytest2DF;
+    //convert(copytest2DF, test2DMSF);
+    CoordinatesNS::CoordinatesDMF copytest2DMF { test2DMSF };
+    //CoordinatesNS::CoordinatesDMF copytest2DMF;
+    //convert(copytest2DMF, test2DMSF);
     CoordinatesNS::CoordinatesDMSF copytest2DMSF(test2DMSF);
 
     CoordinatesNS::Cart_vec_tF testCartVec0 { 10, 10 };
@@ -68,7 +68,7 @@ int main()
     CoordinatesNS::CoordinatesDMSF LHR { DMS_tF {51.0f, 28.0f, 12.0720f}, DMS_tF {-0.0f, 27.0f, 15.4620f} };
     CoordinatesNS::CoordinatesDMSF PCG { DMS_tF {49.0f, 0.0f, 35.0064f}, DMS_tF {2.0f, 32.0f, 52.0008f} };
     CoordinatesNS::CoordinatesDF SPBH { D_tF{-36.788433f}, D_tF{174.688766f} };
-    CoordinatesNS::CoordinatesDF JSIA { D_tF{-26.1372399}, D_tF{28.1975} };
+    CoordinatesNS::CoordinatesDF JSIA { D_tF{-26.1372399f}, D_tF{28.1975f} };
 
     nav_info_dump(LAX, JFK, "LAX"s, "JFK"s);
     std::cout << std::endl;
@@ -110,12 +110,18 @@ void nav_info_dump(T0 const& P0, T1 const& P1, std::string&& name0, std::string&
     CoordinatesNS::CoordinatesDMSF FP0 { P0 };
     CoordinatesNS::CoordinatesDMSF FP1 { P1 };
 
-    //std::cout << name0 << " ("s << P0 << ") " << name1 << " ("s << P1 << ") Great Circle "s << great_circle << "nm  Small Great Circle "s << great_circle_sm << "nm Great Circle Haversine "s << great_circle_haversine << "nm Inital bearing " << great_circle_bearing << " Midpoint " << great_circle_midpoint << " Midpoint (frac 50%) " << great_circle_frac << " Calc " << name1 << " (" << calc_P1 << ")" << std::endl;
-    //std::cout << "Rectolinear "s << rect_linear << "nm Rhumb line "s << rhumb_line << "nm Rhumb bearing "s << rhumb_brg << " Rhumb midpoint "s << rhumb_mp << " Rhumb " << name1 << " "s << rhumb_calc_P1 << std::endl;
-    std::cout << name1 << " ("s << P1 << ") -- " << FP1 << std::endl;
-    std::cout << "GC Calc\t"s << calc_P1 << std::endl;
-    std::cout << "RL Cacl\t"s << rhumb_calc_P1 << std::endl << std::endl;
-    std::cout << "Midpoint GC\t\t"s << great_circle_midpoint << std::endl;
-    std::cout << "Midpoint GC (50%)\t"s << great_circle_frac << std::endl;
-    std::cout << "Midpoint RL\t\t"s << rhumb_mp << std::endl << std::endl;
+    std::cout << name0 << " ("s << P0 << ") " << name1 << " ("s << P1 << ")"s << std::endl;
+    std::cout << "Great Circle "s << great_circle << "nm  Small Great Circle "s << great_circle_sm << "nm Great Circle Haversine "s << great_circle_haversine << "nm" << std::endl;
+    std::cout << "Inital bearing " << great_circle_bearing << " Midpoint " << great_circle_midpoint << " Midpoint(frac 50 %) " << great_circle_frac << std::endl;
+    std::cout << "Calc " << name1 << " (" << calc_P1 << ")" << std::endl;
+    std::cout << "Rectolinear "s << rect_linear << "nm Rhumb line "s << rhumb_line << "nm Rhumb bearing "s << rhumb_brg << " Rhumb midpoint "s << rhumb_mp << std::endl;
+    std::cout << "Rhumb " << name1 << " "s << rhumb_calc_P1 << std::endl;
+
+    // Validation dump...
+    //std::cout << name1 << " ("s << P1 << ") -- " << FP1 << std::endl;
+    //std::cout << "GC Calc\t"s << calc_P1 << std::endl;
+    //std::cout << "RL Cacl\t"s << rhumb_calc_P1 << std::endl << std::endl;
+    //std::cout << "Midpoint GC\t\t"s << great_circle_midpoint << std::endl;
+    //std::cout << "Midpoint GC (50%)\t"s << great_circle_frac << std::endl;
+    //std::cout << "Midpoint RL\t\t"s << rhumb_mp << std::endl << std::endl;
 }

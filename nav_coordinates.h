@@ -3,6 +3,7 @@
 #include <cmath>
 #include <initializer_list>
 #include <iostream>
+#include <cassert>
 
 #include "nav_constants.h"
 
@@ -19,17 +20,23 @@ namespace CoordinatesNS {
 	template <typename T>
 	struct DMS_t;
 
+	enum class CoordinatesType {
+		NONE, // No rules!
+		LATITUDE, // 90 > x > -90
+		LONGITUDE, // 180 > x > -180
+		GENERAL // 360 > x > -360
+	};
+
 	template <class T>
 	class Coordinates
 	{
 	// Private must be first to make phi and lambda work...
 	private:
 		T latM {};
-
 		T lonM {};
 
 	public:
-		Coordinates<T>(T const lat_, T const lon_) : latM { lat_ }, lonM { lon_ } {}
+		Coordinates<T>(T const lat_, T const lon_) : latM { lat_ }, lonM { lon_ } { latM.type = CoordinatesType::LATITUDE; lonM.type = CoordinatesType::LONGITUDE; latM.validate(); lonM.validate(); }
 		template <class TT>
 		Coordinates<T>(TT const pos) : latM { pos.lat() }, lonM { pos.lon() } {}
 		Coordinates<T>() = default;
@@ -94,9 +101,10 @@ namespace CoordinatesNS {
 	template <typename T>
 	struct D_t {
 		T deg {};
+		CoordinatesType type {CoordinatesType::NONE};
 
 		D_t<T>() = default;
-		D_t<T>(T deg_) : deg { deg_ }
+		D_t<T>(T deg_, CoordinatesType type_ = CoordinatesType::NONE) : deg { deg_ }, type { type_}
 		{
 		}
 
@@ -115,15 +123,18 @@ namespace CoordinatesNS {
 		operator DMS_t<T>() const;
 		D_t<T>& operator=(const DM_t<T>& rhs);
 		D_t<T>& operator=(const DMS_t<T> & rhs);
+
+		void validate() const;
 	};
 
 	template <typename T>
 	struct DM_t {
 		T deg {};
 		T min {};
+		CoordinatesType type { CoordinatesType::NONE };
 
 		DM_t<T>() = default;
-		DM_t<T>(T deg_, T min_) : deg {deg_}, min{min_}
+		DM_t<T>(T deg_, T min_, CoordinatesType type_ = CoordinatesType::NONE) : deg {deg_}, min{min_}, type{type_}
 		{
 		}
 
@@ -142,6 +153,8 @@ namespace CoordinatesNS {
 		operator DMS_t<T>() const;
 		DM_t<T>& operator=(const D_t<T>&rhs);
 		DM_t<T>& operator=(const DMS_t<T>&rhs);
+
+		void validate() const;
 	};
 
 	template <typename T>
@@ -149,9 +162,10 @@ namespace CoordinatesNS {
 		T deg {};
 		T min {};
 		T sec {};
+		CoordinatesType type { CoordinatesType::NONE };
 
 		DMS_t<T>() = default;
-		DMS_t<T>(T deg_, T min_, T sec_) : deg { deg_ }, min { min_ }, sec { sec_ }
+		DMS_t<T>(T deg_, T min_, T sec_, CoordinatesType type_ = CoordinatesType::NONE) : deg { deg_ }, min { min_ }, sec { sec_ }, type { type_ }
 		{
 		}
 
@@ -171,6 +185,8 @@ namespace CoordinatesNS {
 
 		DMS_t<T>& operator=(const D_t<T>& rhs);
 		DMS_t<T>& operator=(const DM_t<T>& rhs);
+
+		void validate() const;
 	};
 
 	template <typename T>
@@ -188,6 +204,9 @@ namespace CoordinatesNS {
 		T const valtmp { std::fabs(rhs.deg) + (rhs.min / NavigationConstantsNS::deg_min<T>) };
 		this->deg = std::copysign(valtmp, stmp);
 
+		this->type = rhs.type;
+		this->validate();
+
 		return *this;
 	}
 
@@ -197,6 +216,9 @@ namespace CoordinatesNS {
 		T const stmp { rhs.deg };
 		T const valtmp { std::fabs(rhs.deg) + (rhs.min / NavigationConstantsNS::deg_min<T>) + (rhs.sec / NavigationConstantsNS::deg_sec<T>) };
 		this->deg = std::copysign(valtmp, stmp);
+
+		this->type = rhs.type;
+		this->validate();
 
 		return *this;
 	}
@@ -221,6 +243,9 @@ namespace CoordinatesNS {
 		this->deg = std::copysign(std::floor(tdeg), stmp);
 		this->min = std::fmod(tdeg, static_cast<T>(1)) * NavigationConstantsNS::deg_min<T>;
 
+		this->type = rhs.type;
+		this->validate();
+
 		return *this;
 	}
 
@@ -229,6 +254,9 @@ namespace CoordinatesNS {
 	{
 		this->deg = rhs.deg;
 		this->min = rhs.min + (rhs.sec / NavigationConstantsNS::min_sec<T>);
+
+		this->type = rhs.type;
+		this->validate();
 
 		return *this;
 	}
@@ -254,6 +282,9 @@ namespace CoordinatesNS {
 		this->min = std::floor(min);
 		this->sec = std::fmod(min, static_cast<T>(1)) * NavigationConstantsNS::min_sec<T>;
 
+		this->type = rhs.type;
+		this->validate();
+
 		return *this;
 	}
 
@@ -264,6 +295,9 @@ namespace CoordinatesNS {
 		T const min { rhs.min };
 		this->min = std::floor(min);
 		this->sec = std::fmod(min, static_cast<T>(1)) * NavigationConstantsNS::min_sec<T>;
+
+		this->type = rhs.type;
+		this->validate();
 
 		return *this;
 	}
@@ -301,6 +335,9 @@ namespace CoordinatesNS {
 		T const min { std::fmod(ldeg, static_cast<T>(1)) * NavigationConstantsNS::deg_min<T> };
 		ret.min = min;
 
+		ret.type = type;
+		ret.validate();
+
 		return ret;
 	}
 
@@ -315,6 +352,9 @@ namespace CoordinatesNS {
 		ret.min = std::floor(min);
 		ret.sec = std::fmod(min, static_cast<T>(1)) * NavigationConstantsNS::min_sec<T>;
 
+		ret.type = type;
+		ret.validate();
+
 		return ret;
 	}
 
@@ -324,6 +364,9 @@ namespace CoordinatesNS {
 		auto const stmp { deg };
 		auto const valtmp { std::abs(deg) + (min / NavigationConstantsNS::deg_min<T>) };
 		ret.deg = std::copysign(valtmp, stmp);
+
+		ret.type = type;
+		ret.validate();
 
 		return ret;
 	}
@@ -336,6 +379,9 @@ namespace CoordinatesNS {
 		ret.min = lmin;
 		ret.sec = ((min - lmin) * NavigationConstantsNS::min_sec<T>);
 
+		ret.type = type;
+		ret.validate();
+
 		return ret;
 	}
 
@@ -346,6 +392,9 @@ namespace CoordinatesNS {
 		auto const valtmp { std::abs(deg) + (min / NavigationConstantsNS::deg_min<T>) + (sec / NavigationConstantsNS::deg_sec<T>) };
 		ret.deg = std::copysign(valtmp, stmp);
 
+		ret.type = type;
+		ret.validate();
+
 		return ret;
 	}
 
@@ -355,8 +404,92 @@ namespace CoordinatesNS {
 		ret.deg = deg;
 		ret.min = min + (sec / NavigationConstantsNS::min_sec<T>);
 
+		ret.type = type;
+		ret.validate();
+
 		return ret;
 	}
+
+	template <typename T>
+	void D_t<T>::validate() const {
+		switch (type) {
+		case CoordinatesType::NONE: // No rules!
+		{
+			// No validation...
+		}
+		break;
+		case CoordinatesType::LATITUDE: // 90 > x > -90
+		{
+			assert((deg < static_cast<T>(90)) && (deg > static_cast<T>(-90)));
+		}
+		break;
+		case CoordinatesType::LONGITUDE: // 180 > x > -180
+		{
+			assert((deg < static_cast<T>(180)) && (deg > static_cast<T>(-180)));
+		}
+		break;
+		case CoordinatesType::GENERAL: // 360 > x > -360
+		{
+			assert((deg < static_cast<T>(360)) && (deg > static_cast<T>(-360)));
+		}
+		break;
+		}
+	};
+
+	template <typename T>
+	void DM_t<T>::validate() const {
+		switch (type) {
+		case CoordinatesType::NONE: // No rules!
+		{
+			// No validation...
+		}
+		break;
+		case CoordinatesType::LATITUDE: // 90 > x > -90
+		{
+			assert((deg < static_cast<T>(90)) && (deg > static_cast<T>(-90)));
+		}
+		break;
+		case CoordinatesType::LONGITUDE: // 180 > x > -180
+		{
+			assert((deg < static_cast<T>(180)) && (deg > static_cast<T>(-180)));
+		}
+		break;
+		case CoordinatesType::GENERAL: // 360 > x > -360
+		{
+			assert((deg < static_cast<T>(360)) && (deg > static_cast<T>(-360)));
+		}
+		break;
+		}
+		assert((min < static_cast<T>(60)) && min >= static_cast<T>(0));
+	};
+
+	template <typename T>
+	void DMS_t<T>::validate() const {
+		switch (type) {
+		case CoordinatesType::NONE: // No rules!
+		{
+			// No validation...
+		}
+		break;
+		case CoordinatesType::LATITUDE: // 90 > x > -90
+		{
+			assert((deg < static_cast<T>(90)) && (deg > static_cast<T>(-90)));
+		}
+		break;
+		case CoordinatesType::LONGITUDE: // 180 > x > -180
+		{
+			assert((deg < static_cast<T>(180)) && (deg > static_cast<T>(-180)));
+		}
+		break;
+		case CoordinatesType::GENERAL: // 360 > x > -360
+		{
+			assert((deg < static_cast<T>(360)) && (deg > static_cast<T>(-360)));
+		}
+		break;
+		}
+		assert((min < static_cast<T>(60)) && min >= static_cast<T>(0));
+		assert((sec < static_cast<T>(60)) && sec >= static_cast<T>(0));
+	};
 
 	template <typename TN>
 	std::ostream& operator<<(std::ostream& out, const D_t<TN>& coord) {
