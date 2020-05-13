@@ -68,6 +68,7 @@ int main()
     CoordinatesNS::CoordinatesDMSF LHR { DMS_tF {51.0f, 28.0f, 12.0720f}, DMS_tF {-0.0f, 27.0f, 15.4620f} };
     CoordinatesNS::CoordinatesDMSF PCG { DMS_tF {49.0f, 0.0f, 35.0064f}, DMS_tF {2.0f, 32.0f, 52.0008f} };
     CoordinatesNS::CoordinatesDF SPBH { D_tF{-36.788433f}, D_tF{174.688766f} };
+    CoordinatesNS::CoordinatesDF JSIA { D_tF{-26.1372399}, D_tF{28.1975} };
 
     nav_info_dump(LAX, JFK, "LAX"s, "JFK"s);
     std::cout << std::endl;
@@ -84,6 +85,10 @@ int main()
     nav_info_dump(LHR, SPBH, "LHR"s, "SPBH"s);
     std::cout << std::endl;
     nav_info_dump(SPBH, LHR, "SPBH"s, "LHR"s);
+    std::cout << std::endl;
+    nav_info_dump(LAX, JSIA, "LAX"s, "JSIA"s);
+    std::cout << std::endl;
+    nav_info_dump(JSIA, LAX, "JSIA"s, "LAX"s);
 }
 
 template <typename T0, typename T1>
