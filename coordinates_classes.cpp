@@ -110,15 +110,15 @@ void nav_info_dump(T0 const& P0, T1 const& P1, std::string&& name0, std::string&
     CoordinatesNS::CoordinatesDMSF FP0 { P0 };
     CoordinatesNS::CoordinatesDMSF FP1 { P1 };
 
-    std::cout << name0 << " ("s << P0 << ") " << name1 << " ("s << P1 << ")"s << std::endl;
+    std::cout << name0 << " ("s << P0 << ") "s << name1 << " ("s << P1 << ")"s << std::endl;
     std::cout << "Great Circle "s << great_circle << "nm  Small Great Circle "s << great_circle_sm << "nm Great Circle Haversine "s << great_circle_haversine << "nm" << std::endl;
-    std::cout << "Inital bearing " << great_circle_bearing << " Midpoint " << great_circle_midpoint << " Midpoint(frac 50 %) " << great_circle_frac << std::endl;
-    std::cout << "Calc " << name1 << " (" << calc_P1 << ")" << std::endl;
+    std::cout << "Inital bearing "s << great_circle_bearing << " Midpoint "s << great_circle_midpoint << " Midpoint(frac 50 %) "s << great_circle_frac << std::endl;
+    std::cout << "Calc "s << name1 << " ("s << calc_P1 << ")"s << std::endl;
     std::cout << "Rectolinear "s << rect_linear << "nm Rhumb line "s << rhumb_line << "nm Rhumb bearing "s << rhumb_brg << " Rhumb midpoint "s << rhumb_mp << std::endl;
-    std::cout << "Rhumb " << name1 << " "s << rhumb_calc_P1 << std::endl;
+    std::cout << "Rhumb "s << name1 << " "s << rhumb_calc_P1 << std::endl;
 
     // Validation dump...
-    //std::cout << name1 << " ("s << P1 << ") -- " << FP1 << std::endl;
+    //std::cout << name1 << " ("s << P1 << ") -- "s << FP1 << std::endl;
     //std::cout << "GC Calc\t"s << calc_P1 << std::endl;
     //std::cout << "RL Cacl\t"s << rhumb_calc_P1 << std::endl << std::endl;
     //std::cout << "Midpoint GC\t\t"s << great_circle_midpoint << std::endl;
