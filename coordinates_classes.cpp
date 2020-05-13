@@ -10,13 +10,14 @@
 
 using namespace CoordinatesNS;
 using namespace std::literals::string_literals;
+using namespace std::literals::string_view_literals;
 
 template <typename T0, typename T1>
-void nav_info_dump(T0 const& P0, T1 const& P1, std::string&& name0, std::string&& name1);
+void nav_info_dump(T0 const& P0, T1 const& P1, std::string_view&& name0, std::string_view&& name1);
 
 int main()
 {
-    std::cout << "Test code for navigation code" << std::endl;
+    std::cout << "Test code for navigation code"sv << std::endl;
 
     CoordinatesNS::CoordinatesDF test0DF { 40.7030526_ND, 74.0157877_WD }; //New York Battery Part
     CoordinatesNS::CoordinatesDF copytest0DF(test0DF);
@@ -55,11 +56,11 @@ int main()
 
     CoordinatesNS::Nav_vec_tF testNavVecA { testNavVec0 + testNavVec1 };
 
-    std::cout << "test0DF "s << test0DF << " "s << copytest0DF << " "s << copytest0DMF << " "s << copytest0DMSF << " Phi "s << test0DF.phi() << " Lambda "s << test0DF.lambda() << std::endl;
-    std::cout << "test1DMF "s << test1DMF << " "s << copytest1DF << " "s << copytest1DMF << " "s << copytest1DMSF << " Phi "s << test1DMF.phi() << " Lambda "s << test1DMF.lambda() << std::endl;
-    std::cout << "test2DMSF "s << test2DMSF << " "s << copytest2DF << " "s << copytest2DMF << " "s << copytest2DMSF << " Phi "s << test2DMSF.phi() << " Lambda "s << test2DMSF.lambda() << std::endl;
-    std::cout << "testCartVec0 "s << testCartVec0 << " + testCartVec1 "s << testCartVec1 << " = testCartVecA "s << testCartVecA << std::endl;
-    std::cout << "testNavVec0 "s << testNavVec0 << " + testNavVec1 "s << testNavVec1 << " = testNavVecA "s << testNavVecA << std::endl;
+    std::cout << "test0DF "sv << test0DF << " "sv << copytest0DF << " "sv << copytest0DMF << " "sv << copytest0DMSF << " Phi "sv << test0DF.phi() << " Lambda "sv << test0DF.lambda() << std::endl;
+    std::cout << "test1DMF "sv << test1DMF << " "sv << copytest1DF << " "sv << copytest1DMF << " "sv << copytest1DMSF << " Phi "sv << test1DMF.phi() << " Lambda "sv << test1DMF.lambda() << std::endl;
+    std::cout << "test2DMSF "sv << test2DMSF << " "sv << copytest2DF << " "sv << copytest2DMF << " "sv << copytest2DMSF << " Phi "sv << test2DMSF.phi() << " Lambda "sv << test2DMSF.lambda() << std::endl;
+    std::cout << "testCartVec0 "sv << testCartVec0 << " + testCartVec1 "sv << testCartVec1 << " = testCartVecA "sv << testCartVecA << std::endl;
+    std::cout << "testNavVec0 "sv << testNavVec0 << " + testNavVec1 "sv << testNavVec1 << " = testNavVecA "sv << testNavVecA << std::endl;
 
     std::cout << "Maths test..." << std::endl << std::endl << std::endl;
     CoordinatesNS::CoordinatesDMF LAX { DM_tF {33.0f, 57.0f},  DM_tF {-118.0f, 24.0f} };
@@ -70,29 +71,29 @@ int main()
     CoordinatesNS::CoordinatesDF SPBH { D_tF{-36.788433f}, D_tF{174.688766f} };
     CoordinatesNS::CoordinatesDF JSIA { D_tF{-26.1372399f}, D_tF{28.1975f} };
 
-    nav_info_dump(LAX, JFK, "LAX"s, "JFK"s);
+    nav_info_dump(LAX, JFK, "LAX"sv, "JFK"sv);
     std::cout << std::endl;
-    nav_info_dump(JFK, LAX, "JFK"s, "LAX"s);
+    nav_info_dump(JFK, LAX, "JFK"sv, "LAX"sv);
     std::cout << std::endl;
-    nav_info_dump(SFO, LHR, "SFO"s, "LHR"s);
+    nav_info_dump(SFO, LHR, "SFO"sv, "LHR"sv);
     std::cout << std::endl;
-    nav_info_dump(LHR, SFO, "LHR"s, "SFO"s);
+    nav_info_dump(LHR, SFO, "LHR"sv, "SFO"sv);
     std::cout << std::endl;
-    nav_info_dump(LAX, PCG, "LAX"s, "PCG"s);
+    nav_info_dump(LAX, PCG, "LAX"sv, "PCG"sv);
     std::cout << std::endl;
-    nav_info_dump(PCG, LAX, "PCG"s, "LAX"s);
+    nav_info_dump(PCG, LAX, "PCG"sv, "LAX"sv);
     std::cout << std::endl;
-    nav_info_dump(LHR, SPBH, "LHR"s, "SPBH"s);
+    nav_info_dump(LHR, SPBH, "LHR"sv, "SPBH"sv);
     std::cout << std::endl;
-    nav_info_dump(SPBH, LHR, "SPBH"s, "LHR"s);
+    nav_info_dump(SPBH, LHR, "SPBH"sv, "LHR"sv);
     std::cout << std::endl;
-    nav_info_dump(LAX, JSIA, "LAX"s, "JSIA"s);
+    nav_info_dump(LAX, JSIA, "LAX"sv, "JSIA"sv);
     std::cout << std::endl;
-    nav_info_dump(JSIA, LAX, "JSIA"s, "LAX"s);
+    nav_info_dump(JSIA, LAX, "JSIA"sv, "LAX"sv);
 }
 
 template <typename T0, typename T1>
-void nav_info_dump(T0 const& P0, T1 const& P1, std::string&& name0, std::string&& name1) {
+void nav_info_dump(T0 const& P0, T1 const& P1, std::string_view&& name0, std::string_view&& name1) {
     auto great_circle_sm { grtcrcl_dist_small_nm(P0, P1) };
     auto great_circle { grtcrcl_dist_nm(P0, P1) };
     auto great_circle_haversine { grtcrcl_dist_haversine_nm(P0, P1) };
@@ -110,18 +111,18 @@ void nav_info_dump(T0 const& P0, T1 const& P1, std::string&& name0, std::string&
     CoordinatesNS::CoordinatesDMSF FP0 { P0 };
     CoordinatesNS::CoordinatesDMSF FP1 { P1 };
 
-    std::cout << name0 << " ("s << P0 << ") "s << name1 << " ("s << P1 << ")"s << std::endl;
-    std::cout << "Great Circle "s << great_circle << "nm  Small Great Circle "s << great_circle_sm << "nm Great Circle Haversine "s << great_circle_haversine << "nm"s << std::endl;
-    std::cout << "Inital bearing "s << great_circle_bearing << " Midpoint "s << great_circle_midpoint << " Midpoint(frac 50 %) "s << great_circle_frac << std::endl;
-    std::cout << "Calc "s << name1 << " ("s << calc_P1 << ")"s << std::endl;
-    std::cout << "Rectolinear "s << rect_linear << "nm Rhumb line "s << rhumb_line << "nm Rhumb bearing "s << rhumb_brg << " Rhumb midpoint "s << rhumb_mp << std::endl;
-    std::cout << "Rhumb "s << name1 << " "s << rhumb_calc_P1 << std::endl;
+    std::cout << name0 << " ("sv << P0 << ") "sv << name1 << " ("sv << P1 << ")"sv << std::endl;
+    std::cout << "Great Circle "sv << great_circle << "nm  Small Great Circle "sv << great_circle_sm << "nm Great Circle Haversine "sv << great_circle_haversine << "nm"sv << std::endl;
+    std::cout << "Inital bearing "sv << great_circle_bearing << " Midpoint "sv << great_circle_midpoint << " Midpoint(frac 50 %) "sv << great_circle_frac << std::endl;
+    std::cout << "Calc "sv << name1 << " ("sv << calc_P1 << ")"sv << std::endl;
+    std::cout << "Rectolinear "sv << rect_linear << "nm Rhumb line "sv << rhumb_line << "nm Rhumb bearing "sv << rhumb_brg << " Rhumb midpoint "sv << rhumb_mp << std::endl;
+    std::cout << "Rhumb "sv << name1 << " "sv << rhumb_calc_P1 << std::endl;
 
     // Validation dump...
-    //std::cout << name1 << " ("s << P1 << ") -- "s << FP1 << std::endl;
-    //std::cout << "GC Calc\t"s << calc_P1 << std::endl;
-    //std::cout << "RL Cacl\t"s << rhumb_calc_P1 << std::endl << std::endl;
-    //std::cout << "Midpoint GC\t\t"s << great_circle_midpoint << std::endl;
-    //std::cout << "Midpoint GC (50%)\t"s << great_circle_frac << std::endl;
-    //std::cout << "Midpoint RL\t\t"s << rhumb_mp << std::endl << std::endl;
+    //std::cout << name1 << " ("sv << P1 << ") -- "sv << FP1 << std::endl;
+    //std::cout << "GC Calc\t"sv << calc_P1 << std::endl;
+    //std::cout << "RL Cacl\t"sv << rhumb_calc_P1 << std::endl << std::endl;
+    //std::cout << "Midpoint GC\t\t"sv << great_circle_midpoint << std::endl;
+    //std::cout << "Midpoint GC (50%)\t"sv << great_circle_frac << std::endl;
+    //std::cout << "Midpoint RL\t\t"sv << rhumb_mp << std::endl << std::endl;
 }
