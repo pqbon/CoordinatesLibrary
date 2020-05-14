@@ -124,11 +124,11 @@ namespace CoordinatesNS {
 	{
 		T const X { std::abs(rhs.X) };
 		T const Y { std::abs(rhs.Y) };
-		constexpr T M0 { static_cast<T>(0) };
-		constexpr T M90 { static_cast<T>(90) };
-		constexpr T M180 { static_cast<T>(180) };
-		constexpr T M270 { static_cast<T>(270) };
-		constexpr T M360 { static_cast<T>(360) };
+		[[maybe_unused]] constexpr T M0 { static_cast<T>(0) };
+		[[maybe_unused]] constexpr T M90 { static_cast<T>(90) };
+		[[maybe_unused]] constexpr T M180 { static_cast<T>(180) };
+		[[maybe_unused]] constexpr T M270 { static_cast<T>(270) };
+		[[maybe_unused]] constexpr T M360 { static_cast<T>(360) };
 
 		//r = sqrt(x2 + y2)
 		//theta = atan(y / x)

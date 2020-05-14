@@ -11,15 +11,15 @@
 using namespace std::literals::string_literals;
 
 namespace CoordinatesNS::Float {
-	using D_tF = D_t<float_t>;
-	using DM_tF = DM_t<float_t>;
-	using DMS_tF = DMS_t<float_t>;
-	using Nav_vec_tF = Nav_vec_t<float_t>;
-	using Cart_vec_tF = Cart_vec_t<float_t>;
+	using D_tF [[maybe_unused]] = D_t<float_t>;
+	using DM_tF [[maybe_unused]] = DM_t<float_t>;
+	using DMS_tF [[maybe_unused]] = DMS_t<float_t>;
+	using Nav_vec_tF [[maybe_unused]] = Nav_vec_t<float_t>;
+	using Cart_vec_tF [[maybe_unused]] = Cart_vec_t<float_t>;
 
-	using CoordinatesDF = Coordinates<D_tF>;
-	using CoordinatesDMF = Coordinates<DM_tF>;
-	using CoordinatesDMSF = Coordinates<DMS_tF>;
+	using CoordinatesDF [[maybe_unused]] = Coordinates<D_tF>;
+	using CoordinatesDMF [[maybe_unused]] = Coordinates<DM_tF>;
+	using CoordinatesDMSF [[maybe_unused]] = Coordinates<DMS_tF>;
 
 	D_tF operator""_D(long double degs_);
 
@@ -60,15 +60,15 @@ namespace CoordinatesNS::Float {
 }
 
 namespace CoordinatesNS::Double {
-	using D_tD = D_t<double>;
-	using DM_tD = DM_t<double>;
-	using DMS_tD = DMS_t<double>;
-	using Nav_vec_tD = Nav_vec_t<double>;
-	using Cart_vec_tD = Cart_vec_t<double>;
+	using D_tD [[maybe_unused]] = D_t<double>;
+	using DM_tD [[maybe_unused]] = DM_t<double>;
+	using DMS_tD [[maybe_unused]] = DMS_t<double>;
+	using Nav_vec_tD [[maybe_unused]] = Nav_vec_t<double>;
+	using Cart_vec_tD [[maybe_unused]] = Cart_vec_t<double>;
 
-	using CoordinatesDD = Coordinates<D_tD>;
-	using CoordinatesDMD = Coordinates<DM_tD>;
-	using CoordinatesDMSD = Coordinates<DMS_tD>;
+	using CoordinatesDD [[maybe_unused]] = Coordinates<D_tD>;
+	using CoordinatesDMD [[maybe_unused]] = Coordinates<DM_tD>;
+	using CoordinatesDMSD [[maybe_unused]] = Coordinates<DMS_tD>;
 
 	D_tD operator""_D(long double degs_);
 
