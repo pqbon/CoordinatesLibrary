@@ -23,11 +23,11 @@ namespace CoordinatesNS {
 
 		decltype(p0.phi()) const rlatdiff { rlat0 - rlat1 };
 		decltype(p0.phi()) const rlondiff { rlon0 - rlon1 };
-		decltype(p0.phi()) const sin_latdiff { std::sin(rlatdiff / 2) };
-		decltype(p0.phi()) const sin_londiff { std::sin(rlondiff / 2) };
+		decltype(p0.phi()) const sin_latdiff { std::sin(rlatdiff / static_cast<decltype(p0.phi())>(2)) };
+		decltype(p0.phi()) const sin_londiff { std::sin(rlondiff / static_cast<decltype(p0.phi())>(2)) };
 		decltype(p0.phi()) const cos_lat0 { std::cos(rlat0) };
 		decltype(p0.phi()) const cos_lat1 { std::cos(rlat1) };
-		decltype(p0.phi()) const dist_rad { 2 * std::asin(std::sqrt(std::pow(sin_latdiff, 2) + cos_lat0 * cos_lat1 * std::pow(sin_londiff, 2))) };
+		decltype(p0.phi()) const dist_rad { static_cast<decltype(p0.phi())>(2) * std::asin(std::sqrt(std::pow(sin_latdiff, static_cast<decltype(p0.phi())>(2)) + cos_lat0 * cos_lat1 * std::pow(sin_londiff, static_cast<decltype(p0.phi())>(2)))) };
 		decltype(p0.phi()) const dist_nm { radians2nm(dist_rad) };
 
 		return dist_nm;
@@ -64,7 +64,7 @@ namespace CoordinatesNS {
 		decltype(p0.phi()) const rsinlatdiff { std::sin(rlatdiff / 2) };
 		decltype(p0.phi()) const rsinlondiff { std::sin(rlondiff / 2) };
 
-		decltype(p0.phi()) const ra { std::pow(rsinlatdiff, 2) + std::cos(rlat0) * std::cos(rlat1) * std::pow(rsinlondiff, 2) };
+		decltype(p0.phi()) const ra { std::pow(rsinlatdiff, static_cast<decltype(p0.phi())>(2)) + std::cos(rlat0) * std::cos(rlat1) * std::pow(rsinlondiff, static_cast<decltype(p0.phi())>(2)) };
 		decltype(p0.phi()) const dist_rad { 2 * std::atan2(std::sqrt(ra), std::sqrt(1 - ra)) };
 		decltype(p0.phi()) const dist_nm { radians2nm(dist_rad) };
 

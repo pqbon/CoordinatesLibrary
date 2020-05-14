@@ -21,38 +21,38 @@ namespace CoordinatesNS {
 	using CoordinatesDMF = Coordinates<DM_tF>;
 	using CoordinatesDMSF = Coordinates<DMS_tF>;
 
-	constexpr D_tF operator""_D(long double degs_);
+	D_tF operator""_D(long double degs_);
 
-	constexpr D_tF operator""_ND(long double degs_);
-	constexpr D_tF operator""_SD(long double degs_);
-	constexpr D_tF operator""_ED(long double degs_);
-	constexpr D_tF operator""_WD(long double degs_);
+	D_tF operator""_ND(long double degs_);
+	D_tF operator""_SD(long double degs_);
+	D_tF operator""_ED(long double degs_);
+	D_tF operator""_WD(long double degs_);
 
-	constexpr D_tF operator""_D(long double degs_)
+	D_tF operator""_D(long double degs_)
 	{
 		D_tF ret(static_cast<float>(degs_));
 		return ret;
 	}
 
-	constexpr D_tF operator""_ND(long double degs_)
+	D_tF operator""_ND(long double degs_)
 	{
 		D_tF ret(static_cast<float>(degs_));
 		return ret;
 	}
 
-	constexpr D_tF operator""_SD(long double degs_)
+	D_tF operator""_SD(long double degs_)
 	{
 		D_tF ret(static_cast<float>(-degs_));
 		return ret;
 	}
 
-	constexpr D_tF operator""_ED(long double degs_)
+	D_tF operator""_ED(long double degs_)
 	{
 		D_tF ret(static_cast<float>(degs_));
 		return ret;
 	}
 
-	constexpr D_tF operator""_WD(long double degs_)
+	D_tF operator""_WD(long double degs_)
 	{
 		D_tF ret(static_cast<float>(-degs_));
 		return ret;

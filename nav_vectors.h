@@ -221,9 +221,8 @@ namespace CoordinatesNS {
 		constexpr T M270 { static_cast<T>(270) };
 		constexpr T M360 { static_cast<T>(360) };
 
-
-		//x = r × cos(theta)
-		//y = r × sin(theta)
+		//x = r ï¿½ cos(theta)
+		//y = r ï¿½ sin(theta)
 
 		if (rhs.direction < M90)
 		{
