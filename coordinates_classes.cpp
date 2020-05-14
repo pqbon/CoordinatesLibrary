@@ -46,21 +46,44 @@ int main()
     //convert(copytest2DMF, test2DMSF);
     CoordinatesNS::CoordinatesDMSF copytest2DMSF(test2DMSF);
 
-    CoordinatesNS::Cart_vec_tF testCartVec0 { 10, 10 };
-    CoordinatesNS::Cart_vec_tF testCartVec1 { 20, 20 };
-    CoordinatesNS::Cart_vec_tF testCartVecA { testCartVec0 + testCartVec1 };
+    CoordinatesNS::Cart_vec_tF const testCartVec0 { 10, 10 };
+    CoordinatesNS::Cart_vec_tF const testCartVec1 { 20, 20 };
+    CoordinatesNS::Cart_vec_tF const testCartVecA { testCartVec0 + testCartVec1 };
 
+    CoordinatesNS::Nav_vec_tF const testNavVec0 { 20, 45 };
+    CoordinatesNS::Nav_vec_tF const testNavVec1 { 30, 45 };
 
-    CoordinatesNS::Nav_vec_tF testNavVec0 { 20, 45 };
-    CoordinatesNS::Nav_vec_tF testNavVec1 { 30, 45 };
+    CoordinatesNS::Nav_vec_tF const testNavVecA { testNavVec0 + testNavVec1 };
 
-    CoordinatesNS::Nav_vec_tF testNavVecA { testNavVec0 + testNavVec1 };
+    CoordinatesNS::Nav_vec_tF const testNavVec0A { 20, 45 };
+    CoordinatesNS::Nav_vec_tF const testNavVec1A { 30, 180 + 45 };
+
+    CoordinatesNS::Nav_vec_tF const testNavVecAA { testNavVec0A + testNavVec1A };
+
+    CoordinatesNS::Nav_vec_tF const testNavVec0B { 30, 0 };
+    CoordinatesNS::Nav_vec_tF const testNavVec1B { 30, 180 };
+
+    CoordinatesNS::Nav_vec_tF const testNavVecAB { testNavVec0B + testNavVec1B };
+
+    CoordinatesNS::Nav_vec_tF const testNavVec0C { 20, 90 };
+    CoordinatesNS::Nav_vec_tF const testNavVec1C { 30, 270 };
+
+    CoordinatesNS::Nav_vec_tF const testNavVecAC { testNavVec0C + testNavVec1C };
+
+    CoordinatesNS::Nav_vec_tF const testNavVec0D { 30, 90 + 45 };
+    CoordinatesNS::Nav_vec_tF const testNavVec1D { 30, 180 + 45 };
+
+    CoordinatesNS::Nav_vec_tF const testNavVecAD { testNavVec0D + testNavVec1D };
 
     std::cout << "test0DF "sv << test0DF << " "sv << copytest0DF << " "sv << copytest0DMF << " "sv << copytest0DMSF << " Phi "sv << test0DF.phi() << " Lambda "sv << test0DF.lambda() << std::endl;
     std::cout << "test1DMF "sv << test1DMF << " "sv << copytest1DF << " "sv << copytest1DMF << " "sv << copytest1DMSF << " Phi "sv << test1DMF.phi() << " Lambda "sv << test1DMF.lambda() << std::endl;
     std::cout << "test2DMSF "sv << test2DMSF << " "sv << copytest2DF << " "sv << copytest2DMF << " "sv << copytest2DMSF << " Phi "sv << test2DMSF.phi() << " Lambda "sv << test2DMSF.lambda() << std::endl;
     std::cout << "testCartVec0 "sv << testCartVec0 << " + testCartVec1 "sv << testCartVec1 << " = testCartVecA "sv << testCartVecA << std::endl;
     std::cout << "testNavVec0 "sv << testNavVec0 << " + testNavVec1 "sv << testNavVec1 << " = testNavVecA "sv << testNavVecA << std::endl;
+    std::cout << "testNavVec0A "sv << testNavVec0A << " + testNavVec1A "sv << testNavVec1A << " = testNavVecAA "sv << testNavVecAA << std::endl;
+    std::cout << "testNavVec0B "sv << testNavVec0B << " + testNavVec1B "sv << testNavVec1B << " = testNavVecAB "sv << testNavVecAB << std::endl;
+    std::cout << "testNavVec0C "sv << testNavVec0C << " + testNavVec1C "sv << testNavVec1C << " = testNavVecAC "sv << testNavVecAC << std::endl;
+    std::cout << "testNavVec0D "sv << testNavVec0D << " + testNavVec1D "sv << testNavVec1D << " = testNavVecAD "sv << testNavVecAD << std::endl;
 
     std::cout << "Maths test..." << std::endl << std::endl << std::endl;
     CoordinatesNS::CoordinatesDMF LAX { DM_tF {33.0f, 57.0f},  DM_tF {-118.0f, 24.0f} };
