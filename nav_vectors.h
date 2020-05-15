@@ -100,7 +100,7 @@ namespace CoordinatesNS {
 
 		Cart_vec_t<T> const ans { cv1 + cv2 };
 
-		return and;
+		return ans;
 	}
 
 	template <typename T>
