@@ -100,9 +100,7 @@ namespace CoordinatesNS {
 
 		Cart_vec_t<T> const ans { cv1 + cv2 };
 
-		lhs = ans;
-
-		return lhs;
+		return and;
 	}
 
 	template <typename T>
@@ -113,9 +111,7 @@ namespace CoordinatesNS {
 
 		Cart_vec_t<T> const ans { cv1 - cv2 };
 
-		lhs = ans;
-
-		return lhs;
+		return ans;
 	}
 
 

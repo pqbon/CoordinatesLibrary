@@ -108,9 +108,7 @@ namespace CoordinatesNS {
 		CoordinatesNS::D_t<decltype(p0.phi())> const lat2D { lat2, CoordinatesType::LATITUDE };
 		CoordinatesNS::D_t<decltype(p0.phi())> const lon2D { lon2, CoordinatesType::LONGITUDE };
 
-		T0 ret {};
-		ret.lat(lat2D);
-		ret.lon(lon2D);
+		T0 const ret { lat2D, lon2D };
 
 		return ret;
 	}
@@ -142,9 +140,7 @@ namespace CoordinatesNS {
 		CoordinatesNS::D_t<decltype(p0.phi())> const lat2D { lat2, CoordinatesType::LATITUDE };
 		CoordinatesNS::D_t<decltype(p0.phi())> const lon2D { lon2, CoordinatesType::LONGITUDE };
 
-		T0 ret {};
-		ret.lat(lat2D);
-		ret.lon(lon2D);
+		T0 const ret { lat2D, lon2D};
 
 		return ret;
 	}
@@ -164,9 +160,7 @@ namespace CoordinatesNS {
 		CoordinatesNS::D_t<decltype(p0.phi())> const lat1D { lat1, CoordinatesType::LATITUDE };
 		CoordinatesNS::D_t<decltype(p0.phi())> const lon1D { lon1, CoordinatesType::LONGITUDE };
 
-		T0 ret {};
-		ret.lat(lat1D);
-		ret.lon(lon1D);
+		T0 const ret { lat1D, lon1D };
 
 		return ret;
 	}
@@ -315,9 +309,7 @@ namespace CoordinatesNS {
 		CoordinatesNS::D_t<decltype(p0.phi())> const lat1D { lat1, CoordinatesType::LATITUDE };
 		CoordinatesNS::D_t<decltype(p0.phi())> const lon1D { lon1, CoordinatesType::LONGITUDE };
 
-		T0 ret {};
-		ret.lat(lat1D);
-		ret.lon(lon1D);
+		T0 const ret { lat1D, lon1D };
 
 		return ret;
 	}
@@ -350,9 +342,7 @@ namespace CoordinatesNS {
 		CoordinatesNS::D_t<decltype(p0.phi())> const lat2D { lat2 };
 		CoordinatesNS::D_t<decltype(p0.phi())> const lon2D { lon2 };
 
-		T0 ret {};
-		ret.lat(lat2D);
-		ret.lon(lon2D);
+		T0 const ret { lat2D, lon2D };
 
 		return ret;
 	}

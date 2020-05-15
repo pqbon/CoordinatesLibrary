@@ -7,7 +7,7 @@
 
 #include "nav_constants.h"
 
-using namespace std::literals::string_literals;
+using namespace std::literals::string_view_literals;
 
 namespace CoordinatesNS {
 
@@ -38,7 +38,7 @@ namespace CoordinatesNS {
 	public:
 		Coordinates<T>(T const lat_, T const lon_) : latM { lat_ }, lonM { lon_ } { latM.type = CoordinatesType::LATITUDE; lonM.type = CoordinatesType::LONGITUDE; latM.validate(); lonM.validate(); }
 		template <class TT>
-		Coordinates<T>(TT const pos) : latM { pos.lat() }, lonM { pos.lon() } {}
+		Coordinates<T>(TT const pos) : latM { pos.lat() }, lonM { pos.lon() } { latM.validate(); lonM.validate(); }
 		Coordinates<T>() = default;
 		~Coordinates<T>() = default;
 		Coordinates<T>(Coordinates<T> const &) = default;
@@ -51,6 +51,8 @@ namespace CoordinatesNS {
 		{
 			lat(rhs.lat());
 			lon(rhs.lon());
+			lat.validate();
+			lon.validate();
 		}
 
 		T lat() const { return latM; }
@@ -60,23 +62,18 @@ namespace CoordinatesNS {
 		void lon(const T lon_) { lonM = lon_; }
 
 		decltype(latM.deg) phi() const {
-			D_t<decltype(latM.deg)> dlatM {};
-			dlatM = latM;
+			D_t<decltype(latM.deg)> const dlatM { latM };
 			return degress2radians(dlatM.deg);
 		}
 
 		decltype(lonM.deg) lambda() const {
-			D_t<decltype(lonM.deg)> dlonM {};
-			dlonM = lonM;
+			D_t<decltype(lonM.deg)> const dlonM { lonM };
 			return degress2radians(dlonM.deg); 
 		}
 
 		template <typename TT>
 		operator Coordinates<TT>() const {
-			Coordinates<TT> ret {};
-
-			ret.lon(lon());
-			ret.lat(lat());
+			Coordinates<TT> const ret { lon(), lat() };
 
 			return ret;
 		}
@@ -192,9 +189,7 @@ namespace CoordinatesNS {
 	template <typename T>
 	D_t<T> operator+(D_t<T> lhs, const D_t<T>& rhs)
 	{
-		lhs.deg += rhs.deg;
-
-		return lhs;
+		return lhs.deg + rhs.deg;
 	}
 
 	template <typename T>
@@ -228,11 +223,9 @@ namespace CoordinatesNS {
 		D_t<T> const lhsD { lhs };
 		D_t<T> const rhsD { rhs };
 
-		D_t<T> tmpD { lhsD + rhsD };
+		DM_t<T> const tmpD { lhsD + rhsD };
 
-		lhs = tmpD;
-
-		return lhs;
+		return tmpD;
 	}
 
 	template <typename T>
@@ -266,10 +259,9 @@ namespace CoordinatesNS {
 		D_t<T> const lhsD { lhs };
 		D_t<T> const rhsD { rhs };
 
-		D_t<T> const tmpD { lhsD + rhsD };
-		lhs = tmpD;
+		DMS_t<T> const tmpD { lhsD + rhsD };
 
-		return lhs;
+		return tmpD;
 	}
 
 	template <typename T>
@@ -311,10 +303,10 @@ namespace CoordinatesNS {
 
 	template <typename TN>
 	std::ostream& operator<<(std::ostream& out, const Coordinates<TN> &coord) {
-		static const std::string north_desg { "N"s };
-		static const std::string south_desg { "S"s };
-		static const std::string east_desg { "E"s };
-		static const std::string west_desg { "W"s };
+		static const std::string north_desg { "N"sv };
+		static const std::string south_desg { "S"sv };
+		static const std::string east_desg { "E"sv };
+		static const std::string west_desg { "W"sv };
 
 		bool const north { !std::signbit(coord.latM.deg) };
 		bool const east { !std::signbit(coord.lonM.deg) };
@@ -322,7 +314,7 @@ namespace CoordinatesNS {
 		const std::string ns_string { (north) ? north_desg : south_desg };
 		const std::string ew_string { (east) ? east_desg : west_desg };
 
-		return out << coord.latM << ns_string  << " "s << coord.lonM << ew_string;
+		return out << coord.latM << ns_string  << " "sv << coord.lonM << ew_string;
 	}
 
 	template <typename T>
@@ -498,12 +490,12 @@ namespace CoordinatesNS {
 
 	template <typename TN>
 	std::ostream& operator<<(std::ostream& out, const DM_t<TN>& coord) {
-		return out << std::abs(coord.deg) << " "s << coord.min << "'"s;
+		return out << std::abs(coord.deg) << " "sv << coord.min << "'"sv;
 	}
 
 	template <typename TN>
 	std::ostream& operator<<(std::ostream& out, const DMS_t<TN>& coord) {
-		return out << std::abs(coord.deg) << " "s << coord.min << "' "s << coord.sec << "\""s;
+		return out << std::abs(coord.deg) << " "sv << coord.min << "' "sv << coord.sec << "\""sv;
 	}
 
 } //CoordinatesNS
