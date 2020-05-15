@@ -51,8 +51,8 @@ namespace CoordinatesNS {
 		{
 			lat(rhs.lat());
 			lon(rhs.lon());
-			lat.validate();
-			lon.validate();
+			latM.validate();
+			lonM.validate();
 		}
 
 		T lat() const { return latM; }
