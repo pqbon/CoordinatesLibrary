@@ -9,6 +9,7 @@
 
 
 using namespace CoordinatesNS;
+using namespace CoordinatesNS::NavCalculations;
 using namespace CoordinatesNS::Double;
 
 using namespace std::literals::string_literals;

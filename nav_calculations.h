@@ -9,7 +9,7 @@
 #include "nav_coordinates.h"
 
 
-namespace CoordinatesNS {
+namespace CoordinatesNS::NavCalculations {
 	using namespace CoordinatesNS::NavigationConstantsNS;
 
 	template <typename T0, typename T1>
