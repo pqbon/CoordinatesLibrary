@@ -63,8 +63,11 @@ LDFLAGS_WINDOWS        =
 # Actually process the OS specific flags. 
 UNAME_S  := $(shell uname -s)
 ifeq ($(UNAME_S), Darwin)      # if MacOS
-EXTRA_CFLAGS  += $(EXTRA_CFLAGS_MACOS)
-EXTRA_LDFLAGS += $(EXTRA_LDFLAGS_MACOS)
+CC = xcrun clang
+CXX = xcrun clang++
+SDK_PATH = $(shell xcrun --show-sdk-path)
+EXTRA_CFLAGS  += -I$(SDK_PATH) $(EXTRA_CFLAGS_MACOS)
+EXTRA_LDFLAGS += -L$(SDK_PATH) $(EXTRA_LDFLAGS_MACOS)
 LDFLAGS       += $(LDFLAGS_MACOS)
 else ifeq ($(UNAME_S), Linux)  # if Linux
 EXTRA_CFLAGS  += $(EXTRA_CFLAGS_LINUX)

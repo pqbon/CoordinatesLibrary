@@ -5,12 +5,12 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "type": "gdb",
+            "type": "cppdbg",
             "request": "launch",
             "name": "GDB",
             "program": "${workspaceFolder}/coordinates_classes.out",
             "stopOnEntry": true,
-            "arguments": ""
+            "cwd": "${workspaceFolder}"
         }
     ]
 }

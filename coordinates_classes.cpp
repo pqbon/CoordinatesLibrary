@@ -2,6 +2,7 @@
 //
 
 #include <iostream>
+#include <string_view>
 #include "nav_coordinates.h"
 #include "nav_vectors.h"
 #include "nav_types.h"
