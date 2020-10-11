@@ -47,7 +47,7 @@ LDFLAGS                = -g
 
 # The directories in which source files reside.
 # If not specified, all subdirectories of the current directory will be added recursively. 
-SRCDIRS               := 
+SRCDIRS               :=
 
 # OS specific. 
 EXTRA_CFLAGS_MACOS     = 
@@ -63,12 +63,13 @@ LDFLAGS_WINDOWS        =
 # Actually process the OS specific flags. 
 UNAME_S  := $(shell uname -s)
 ifeq ($(UNAME_S), Darwin)      # if MacOS
-CC = xcrun clang
-CXX = xcrun clang++
-SDK_PATH = $(shell xcrun --show-sdk-path)
+CC := /usr/bin/xcrun clang
+CXX := /usr/bin/xcrun clang++
+SDK_PATH = $(shell /usr/bin/xcrun --show-sdk-path)
 EXTRA_CFLAGS  += -I$(SDK_PATH) $(EXTRA_CFLAGS_MACOS)
 EXTRA_LDFLAGS += -L$(SDK_PATH) $(EXTRA_LDFLAGS_MACOS)
 LDFLAGS       += $(LDFLAGS_MACOS)
+NODEP := true
 else ifeq ($(UNAME_S), Linux)  # if Linux
 EXTRA_CFLAGS  += $(EXTRA_CFLAGS_LINUX)
 EXTRA_LDFLAGS += $(EXTRA_LDFLAGS_LINUX)
@@ -109,13 +110,13 @@ CTAGSFLAGS =
 ## Stable Section: usually no need to be changed. But you can add more.
 ##==========================================================================
 ifeq ($(SRCDIRS),)
-	SRCDIRS := $(shell find $(SRCDIRS) -type d)
+	SRCDIRS := $(shell /usr/bin/find . -type d)
 endif
 SOURCES = $(foreach d,$(SRCDIRS),$(wildcard $(addprefix $(d)/*,$(SRCEXTS))))
 HEADERS = $(foreach d,$(SRCDIRS),$(wildcard $(addprefix $(d)/*,$(HDREXTS))))
 SRC_CXX = $(filter-out %.c,$(SOURCES))
 OBJS    = $(addsuffix .o, $(basename $(SOURCES)))
-#DEPS    = $(OBJS:%.o=%.d) #replace %.d with .%.d (hide dependency files)
+DEPS    = $(OBJS:%.o=%.d) #replace %.d with .%.d (hide dependency files)
 DEPS    = $(foreach f, $(OBJS), $(addprefix $(dir $(f))., $(patsubst %.o, %.d, $(notdir $(f)))))
 
 ## Define some useful variables.
@@ -218,7 +219,7 @@ endif
 
 ifndef NODEP
 ifneq ($(DEPS),)
-  sinclude $(DEPS)
+	sinclude $(DEPS)
 endif
 endif
 

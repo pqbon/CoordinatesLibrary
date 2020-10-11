@@ -7,10 +7,19 @@
         {
             "type": "cppdbg",
             "request": "launch",
-            "name": "GDB",
-            "program": "${workspaceFolder}/coordinates_classes.out",
+            "name": "Debugger",
             "stopOnEntry": true,
-            "cwd": "${workspaceFolder}"
+            "program": "${workspaceFolder}/coordinates_classes.out",
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "linux": {
+                "MIMode": "gdb",
+                //"miDebuggerPath": "/usr/bin/gdb"
+            },
+            "osx": {
+                "MIMode": "lldb"
+            },
         }
     ]
-}
