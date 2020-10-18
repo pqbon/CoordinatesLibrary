@@ -7,7 +7,7 @@
             "label": "Makefile Build",
             "type": "shell",
             "command": "make -f GNUmakefile -j8",
-            "problemMatcher" : "$gcc",
+            "problemMatcher": "$gcc",
             "group": {
                 "kind": "build",
                 "isDefault": true
@@ -17,12 +17,26 @@
             "label": "Makefile Clean",
             "type": "shell",
             "command": "make -f GNUmakefile -j8 clean",
-            "problemMatcher" : "$gcc",
+            "problemMatcher": "$gcc",
             "group": {
                 "kind": "build",
-                "isDefault": false
+                "isDefault": true
             }
+        },
+        {
+            "label": "Build from Clean",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "Makefile Clean",
+                "Makefile Build"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [
+                "$gcc"
+            ]
         }
-
     ]
 }
